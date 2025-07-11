@@ -1,0 +1,57 @@
+.sidebar {
+  width: 18%;
+  min-height: 100vh;
+  border-right: 1.5px solid #a9a9a9;
+  padding-top: 50px;
+  box-sizing: border-box;
+  background-color: #f9f9f9;
+  font-size: max(1vw, 10px);
+}
+
+.sidebar-options {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding-top: 50px;
+  padding-left: 20%;
+}
+
+.sidebar-option {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 10px 15px;
+  margin: 0 10px;
+  border: none; /* ⬅️ remove border */
+  border-radius: 8px; /* smooth rounded corners */
+  cursor: pointer;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.sidebar-option img {
+  width: 24px;
+  height: 24px;
+}
+
+.sidebar-option p {
+  margin: 0;
+  color: #333;
+  font-weight: 500;
+  font-size: 1em;
+}
+
+.sidebar-option:hover {
+  background-color: #e6f0ff;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.sidebar-option.active {
+  background-color: #d0e3ff;
+}
+
+/* ✅ Responsive: just hide p inside sidebar-option on mobile */
+@media (max-width: 900px) {
+  .sidebar-option p {
+    display: none;
+  }
+}
