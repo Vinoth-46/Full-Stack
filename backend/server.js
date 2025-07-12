@@ -6,6 +6,7 @@ import userRouter from "./routes/userRoute.js";
 import dotenv from 'dotenv';
 import path from "path";
 import { fileURLToPath } from "url";
+import cartRouter from "./routes/cartRoute.js";
 
 // Load environment variables
 dotenv.config();
@@ -31,6 +32,7 @@ connectDB();
 // API routes
 app.use("/api/food", foodRouter);
 app.use("/api/user", userRouter);
+app.use("/api/cart",cartRouter);
 
 // Default route
 app.get("/", (req, res) => {

@@ -2,9 +2,10 @@ import React, { useContext, useState } from 'react';
 import './LoginPopup.css';
 import { assets } from '../../assets/assets';
 import { StoreContext } from '../../context/Storecontext';
+import axios from 'axios';
 
 const LoginPopup = ({ setShowLogin }) => {
-  const { url } = useContext(StoreContext);
+  const { url, setToken } = useContext(StoreContext);
 
   const [currState, setCurrentState] = useState("Login");
   const [data, setData] = useState({
@@ -20,32 +21,24 @@ const LoginPopup = ({ setShowLogin }) => {
 
   const onSubmitHandler = async (e) => {
     e.preventDefault();
-
     const endpoint = currState === "Login" ? "/api/user/login" : "/api/user/register";
 
     try {
-      const response = await fetch(url + endpoint, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(data)
-      });
-
-      const result = await response.json();
+      const response = await axios.post(url + endpoint, data);
+      const result = response.data;
 
       if (result.success) {
         alert(result.message);
         localStorage.setItem("token", result.token);
         localStorage.setItem("user", JSON.stringify(result.user));
+        setToken(result.token);
         setShowLogin(false);
       } else {
-        alert(result.message);
+        alert(result.message || "Something went wrong.");
       }
-
     } catch (error) {
-      console.error("Error during auth:", error);
-      alert("Something went wrong. Please try again.");
+      console.error("Auth error:", error);
+      alert("Server error. Please try again later.");
     }
   };
 

@@ -1,26 +1,30 @@
 import React, { useContext, useState } from 'react';
 import './Cart.css';
-import { StoreContext } from '../../context/Storecontext';  
+import { StoreContext } from '../../context/Storecontext';
 import { useNavigate } from 'react-router-dom';
 
 const Cart = () => {
-  const { cartItems, food_list, removeFromcart, getTotalCartAmount } = useContext(StoreContext);
-
+  const { cartItems, food_list, removeFromcart, getTotalCartAmount, url } = useContext(StoreContext);
   const [promoCode, setPromoCode] = useState('');
   const [discount, setDiscount] = useState(0);
+  const [promoApplied, setPromoApplied] = useState(false);
   const navigate = useNavigate();
-  const subtotal = getTotalCartAmount(); 
+
+  const subtotal = getTotalCartAmount();
   const deliveryFee = subtotal > 0 ? 2 : 0;
   const discountAmount = subtotal * discount;
   const total = subtotal - discountAmount + deliveryFee;
 
   const handlePromoSubmit = (e) => {
     e.preventDefault();
-    if (promoCode.trim().toUpperCase() === "SAVE10") {
-      setDiscount(0.10); 
-      alert("Promo code applied! 10% discount added.");
+    const code = promoCode.trim().toUpperCase();
+    if (code === 'SAVE10') {
+      setDiscount(0.10);
+      setPromoApplied(true);
+      alert('Promo code applied! 10% discount added.');
     } else {
       setDiscount(0);
+      setPromoApplied(false);
       alert("Invalid promo code. Try 'SAVE10'.");
     }
   };
@@ -36,23 +40,28 @@ const Cart = () => {
           <p>Total</p>
           <p>Remove</p>
         </div>
-        <br />
         <hr />
-        {food_list.length > 0 && food_list.map((item) => {
-          if (cartItems[item._id] > 0) {
-            return (
-              <div key={item._id} className='cart-item-title cart-items-item'>
-                <img src={item.image} alt={item.name} />
-                <p>{item.name}</p>
-                <p>₹{item.price}</p>
-                <p>{cartItems[item._id]}</p>
-                <p>₹{item.price * cartItems[item._id]}</p>
-                <p onClick={() => removeFromcart(item._id)} className="cross">x</p>
-              </div>
-            );
-          }
-          return null;
-        })}
+
+        {Object.keys(cartItems).length === 0 || subtotal === 0 ? (
+          <p style={{ padding: '20px', color: '#888' }}>Your cart is empty.</p>
+        ) : (
+          food_list.map((item) => {
+            const quantity = cartItems[item._id];
+            if (quantity > 0) {
+              return (
+                <div key={item._id} className='cart-item-title cart-items-item'>
+                  <img src={`${url}/images/${item.image}`} alt={item.name} />
+                  <p>{item.name}</p>
+                  <p>₹{item.price}</p>
+                  <p>{quantity}</p>
+                  <p>₹{(item.price * quantity).toFixed(2)}</p>
+                  <p onClick={() => removeFromcart(item._id)} className="cross">x</p>
+                </div>
+              );
+            }
+            return null;
+          })
+        )}
       </div>
 
       <div className="cart-bottom">
@@ -83,7 +92,8 @@ const Cart = () => {
               <b>₹{total.toFixed(2)}</b>
             </div>
           </div>
-          <button onClick={()=>navigate('/order')}
+          <button
+            onClick={() => navigate('/order')}
             disabled={subtotal === 0}
             className={subtotal === 0 ? 'disabled-button' : ''}
           >
@@ -100,8 +110,11 @@ const Cart = () => {
                 placeholder='Promo code'
                 value={promoCode}
                 onChange={(e) => setPromoCode(e.target.value)}
+                disabled={promoApplied}
               />
-              <button type="submit">Submit</button>
+              <button type="submit" disabled={promoApplied}>
+                {promoApplied ? 'Applied' : 'Submit'}
+              </button>
             </form>
           </div>
         </div>
