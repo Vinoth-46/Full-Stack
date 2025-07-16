@@ -8,11 +8,18 @@ const LoginPopup = ({ setShowLogin }) => {
   const { url, setToken } = useContext(StoreContext);
 
   const [currState, setCurrentState] = useState("Login");
+  const [loading, setLoading] = useState(false);
   const [data, setData] = useState({
     name: "",
     email: "",
     password: ""
   });
+
+  const isLogin = currState === "Login";
+
+  const resetForm = () => {
+    setData({ name: "", email: "", password: "" });
+  };
 
   const onChangeHandler = (event) => {
     const { name, value } = event.target;
@@ -21,7 +28,9 @@ const LoginPopup = ({ setShowLogin }) => {
 
   const onSubmitHandler = async (e) => {
     e.preventDefault();
-    const endpoint = currState === "Login" ? "/api/user/login" : "/api/user/register";
+
+    setLoading(true);
+    const endpoint = isLogin ? "/api/user/login" : "/api/user/register";
 
     try {
       const response = await axios.post(url + endpoint, data);
@@ -30,15 +39,17 @@ const LoginPopup = ({ setShowLogin }) => {
       if (result.success) {
         alert(result.message);
         localStorage.setItem("token", result.token);
-        localStorage.setItem("user", JSON.stringify(result.user));
+        localStorage.setItem("user", JSON.stringify(result.user)); // Ensure user object excludes sensitive data
         setToken(result.token);
         setShowLogin(false);
       } else {
         alert(result.message || "Something went wrong.");
       }
     } catch (error) {
-      console.error("Auth error:", error);
-      alert("Server error. Please try again later.");
+      const message = error.response?.data?.message || "Server error. Please try again later.";
+      alert(message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -46,7 +57,7 @@ const LoginPopup = ({ setShowLogin }) => {
     <div className='login-popup'>
       <form className="login-popup-container" onSubmit={onSubmitHandler}>
         <div className="login-popup-title">
-          <h2>{currState}</h2>
+          <h2>{isLogin ? "Login" : "Sign Up"}</h2>
           <img
             onClick={() => setShowLogin(false)}
             src={assets.cross_icon}
@@ -55,7 +66,7 @@ const LoginPopup = ({ setShowLogin }) => {
         </div>
 
         <div className="login-popup-inputs">
-          {currState === "Sign Up" && (
+          {!isLogin && (
             <input
               type="text"
               name="name"
@@ -83,8 +94,8 @@ const LoginPopup = ({ setShowLogin }) => {
           />
         </div>
 
-        <button type="submit">
-          {currState === "Sign Up" ? "Create account" : "Login"}
+        <button type="submit" disabled={loading}>
+          {loading ? "Please wait..." : isLogin ? "Login" : "Create account"}
         </button>
 
         <div className="login-popup-condition">
@@ -92,15 +103,19 @@ const LoginPopup = ({ setShowLogin }) => {
           <p>By continuing, I agree to the terms of use & privacy policy.</p>
         </div>
 
-        {currState === "Login" ? (
+        {isLogin ? (
           <p>
             Create a new account?{" "}
-            <span onClick={() => setCurrentState("Sign Up")}>Click here</span>
+            <span onClick={() => { setCurrentState("Sign Up"); resetForm(); }}>
+              Click here
+            </span>
           </p>
         ) : (
           <p>
             Already have an account?{" "}
-            <span onClick={() => setCurrentState("Login")}>Login here</span>
+            <span onClick={() => { setCurrentState("Login"); resetForm(); }}>
+              Login here
+            </span>
           </p>
         )}
       </form>

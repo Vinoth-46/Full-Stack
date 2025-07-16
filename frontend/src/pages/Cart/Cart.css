@@ -91,6 +91,19 @@
   cursor: not-allowed;
 }
 
+.disabled-button {
+  background-color: #ccc !important;
+  cursor: not-allowed !important;
+}
+
+.cart .empty-message {
+  padding: 40px;
+  font-size: 18px;
+  color: #aaa;
+  text-align: center;
+}
+
+
 .cart-promocode {
   flex: 1;
   border: 1px solid #ddd;

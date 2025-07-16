@@ -47,19 +47,25 @@ const Cart = () => {
         ) : (
           food_list.map((item) => {
             const quantity = cartItems[item._id];
-            if (quantity > 0) {
-              return (
-                <div key={item._id} className='cart-item-title cart-items-item'>
-                  <img src={`${url}/images/${item.image}`} alt={item.name} />
-                  <p>{item.name}</p>
-                  <p>₹{item.price}</p>
-                  <p>{quantity}</p>
-                  <p>₹{(item.price * quantity).toFixed(2)}</p>
-                  <p onClick={() => removeFromcart(item._id)} className="cross">x</p>
-                </div>
-              );
-            }
-            return null;
+            if (!quantity) return null;
+
+            return (
+              <div key={item._id} className='cart-items-item'>
+                <img
+                  src={`${url}/images/${item.image}`}
+                  alt={item.name}
+                  onError={(e) => {
+                    e.target.onerror = null;
+                    e.target.src = '/fallback.png'; // optional fallback image
+                  }}
+                />
+                <p>{item.name}</p>
+                <p>₹{item.price}</p>
+                <p>{quantity}</p>
+                <p>₹{(item.price * quantity).toFixed(2)}</p>
+                <p onClick={() => removeFromcart(item._id)} className="cross">x</p>
+              </div>
+            );
           })
         )}
       </div>

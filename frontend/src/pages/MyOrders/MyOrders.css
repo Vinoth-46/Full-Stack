@@ -1,0 +1,109 @@
+.my-orders {
+  padding: 20px;
+  max-width: 1100px;
+  margin: auto;
+  font-family: sans-serif;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.no-orders-message {
+  text-align: center;
+  font-size: 18px;
+  color: #777;
+  padding: 40px 0;
+}
+
+.order-grid {
+  display: grid;
+  grid-template-columns: 40px 3fr 1fr 1fr 2fr 1.5fr;
+  align-items: center;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  padding: 12px 16px;
+  border-radius: 8px;
+  gap: 20px;
+}
+
+/* Icon styling */
+.icon img {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+
+/* Item list */
+.item-list {
+  font-weight: 500;
+  color: #222;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Wrap text when too long */
+.wrap-text {
+  white-space: normal;
+}
+
+/* Status dot */
+.status-dot {
+  width: 6px;             /* reduced from 10px */
+  height: 6px;            /* reduced from 10px */
+  border-radius: 50%;
+  background-color: #008080; /* strong teal */
+  display: inline-block;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+
+/* Optional: more status variations */
+.status-dot.food-processing {
+  background-color: #008080;
+}
+.status-dot.delivered {
+  background-color: #006666;
+}
+.status-dot.cancelled {
+  background-color: #cc0000;
+}
+
+/* Button */
+.track-btn {
+  background-color: #008080; /* Teal */
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  font-size: 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.2s ease;
+}
+
+.track-btn:hover {
+  background-color: #006666; /* Darker teal */
+}
+
+/* Responsive layout */
+@media (max-width: 768px) {
+  .order-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .item-list {
+    white-space: normal;
+  }
+
+  .track-btn {
+    width: fit-content;
+    margin-top: 8px;
+  }
+}
+ 

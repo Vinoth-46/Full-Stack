@@ -41,6 +41,12 @@ color: white;
     background-color: gray;
     border-color: none;
 }
+.footer-logo{
+    width: 60%;
+    /* height: 60%; */
+   
+    
+}
 
 @media (max-width:750px){
     .footer-content{
