@@ -5,7 +5,7 @@ import dotenv from "dotenv";
 
 dotenv.config();
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
-const frontend_url = process.env.FRONTEND_URL || "http://localhost:5174";
+const frontend_url = process.env.FRONTEND_URL || "https://food-del-frontend-zu83.onrender.com";
 
 // ========== Place Order ==========
 const placeOrder = async (req, res) => {
