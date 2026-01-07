@@ -1,29 +1,41 @@
 import axios from "axios";
 import { createContext, useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 export const StoreContext = createContext(null);
 
 const StoreContextProvider = (props) => {
-  const url = "http://localhost:4000";
+  const url = import.meta.env.VITE_API_URL || "";
 
   const [food_list, setFoodlist] = useState([]);
   const [cartItems, setCartItems] = useState({});
   const [token, setToken] = useState(localStorage.getItem("token") || "");
+  const [showLogin, setShowLogin] = useState(false);
 
   // 🛒 Add to cart (with backend sync)
   const addToCart = async (itemId) => {
+    // Check if user is logged in
+    if (!token) {
+      toast.info("Please login to add items to cart", {
+        onClick: () => setShowLogin(true),
+        style: { cursor: "pointer" }
+      });
+      return false;
+    }
+
     const updated = { ...cartItems, [itemId]: (cartItems[itemId] || 0) + 1 };
     setCartItems(updated);
 
-    if (token) {
-      try {
-        await axios.post(`${url}/api/cart/add`, { itemId }, {
-          headers: { Authorization: `Bearer ${token}` }
-        });
-      } catch (err) {
-        console.error("Error adding to cart:", err);
-      }
+    try {
+      await axios.post(`${url}/api/cart/add`, { itemId }, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      toast.success("Added to cart!");
+    } catch (err) {
+      console.error("Error adding to cart:", err);
+      toast.error("Failed to add to cart");
     }
+    return true;
   };
 
   // ❌ Remove from cart (with backend sync)
@@ -93,7 +105,7 @@ const StoreContextProvider = (props) => {
 
   useEffect(() => {
     fetchFoodList();
-    fetchCartData(); // 👈 fetch user cart on app load
+    fetchCartData();
   }, [token]);
 
   // 🌐 Global context values
@@ -106,6 +118,8 @@ const StoreContextProvider = (props) => {
     url,
     token,
     setToken,
+    showLogin,
+    setShowLogin,
   };
 
   return (

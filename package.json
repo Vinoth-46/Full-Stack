@@ -1,0 +1,17 @@
+{
+  "name": "food-application",
+  "version": "1.0.0",
+  "description": "Full-stack food ordering application",
+  "scripts": {
+    "install-all": "cd backend && npm install && cd ../frontend && npm install && cd ../admin && npm install",
+    "build-frontend": "cd frontend && npm run build",
+    "build-admin": "cd admin && npm run build",
+    "build": "npm run build-frontend && npm run build-admin",
+    "start": "cd backend && node server.js",
+    "dev": "cd backend && npm run server",
+    "render-build": "npm run install-all && npm run build"
+  },
+  "keywords": ["food", "delivery", "mern", "react"],
+  "author": "",
+  "license": "ISC"
+}
