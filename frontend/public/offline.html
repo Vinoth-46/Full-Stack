@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VinoTreats - You're Offline</title>
+    <title>VinoTreats - Hungry for Connection!</title>
     <link rel="icon" type="image/png" href="/favicon.png">
     <style>
         * {
@@ -16,7 +16,7 @@
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             min-height: 100vh;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            background: linear-gradient(135deg, #ff6b6b 0%, #ff8e53 50%, #feca57 100%);
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -24,19 +24,237 @@
             color: white;
             text-align: center;
             padding: 20px;
+            overflow: hidden;
         }
 
         .container {
             max-width: 500px;
+            z-index: 10;
         }
 
-        .offline-icon {
-            font-size: 80px;
-            margin-bottom: 20px;
-            animation: float 3s ease-in-out infinite;
+        /* Hungry Chef Character */
+        .chef-container {
+            position: relative;
+            width: 180px;
+            height: 200px;
+            margin: 0 auto 20px;
         }
 
-        @keyframes float {
+        .chef-body {
+            width: 100px;
+            height: 120px;
+            background: white;
+            border-radius: 50px 50px 40px 40px;
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .chef-head {
+            width: 80px;
+            height: 80px;
+            background: #ffeaa7;
+            border-radius: 50%;
+            position: absolute;
+            top: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+        }
+
+        .chef-hat {
+            width: 70px;
+            height: 60px;
+            background: white;
+            border-radius: 30px 30px 0 0;
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 3;
+        }
+
+        .chef-hat::before {
+            content: "";
+            width: 90px;
+            height: 20px;
+            background: white;
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 5px;
+        }
+
+        /* Sad eyes animation */
+        .chef-eyes {
+            position: absolute;
+            top: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 20px;
+            z-index: 4;
+        }
+
+        .eye {
+            width: 12px;
+            height: 12px;
+            background: #2d3436;
+            border-radius: 50%;
+            position: relative;
+            animation: lookAround 4s infinite;
+        }
+
+        .eye::after {
+            content: "😢";
+            font-size: 10px;
+            position: absolute;
+            bottom: -20px;
+            left: 0;
+            animation: tear 2s infinite;
+        }
+
+        @keyframes tear {
+
+            0%,
+            100% {
+                opacity: 0;
+                transform: translateY(0);
+            }
+
+            50% {
+                opacity: 1;
+                transform: translateY(5px);
+            }
+        }
+
+        @keyframes lookAround {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            25% {
+                transform: translateX(-3px);
+            }
+
+            75% {
+                transform: translateX(3px);
+            }
+        }
+
+        .chef-mouth {
+            width: 20px;
+            height: 10px;
+            border: 3px solid #2d3436;
+            border-radius: 0 0 20px 20px;
+            border-top: none;
+            position: absolute;
+            top: 75px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 4;
+        }
+
+        /* Empty plate animation */
+        .plate-container {
+            margin: 30px auto;
+            position: relative;
+        }
+
+        .plate {
+            width: 150px;
+            height: 30px;
+            background: linear-gradient(to bottom, #dfe6e9 0%, #b2bec3 100%);
+            border-radius: 50%;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            position: relative;
+            animation: wobble 3s ease-in-out infinite;
+        }
+
+        .plate::before {
+            content: "";
+            width: 120px;
+            height: 25px;
+            background: linear-gradient(to bottom, #fff 0%, #dfe6e9 100%);
+            border-radius: 50%;
+            position: absolute;
+            top: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        @keyframes wobble {
+
+            0%,
+            100% {
+                transform: rotate(-2deg);
+            }
+
+            50% {
+                transform: rotate(2deg);
+            }
+        }
+
+        .steam {
+            position: absolute;
+            top: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 24px;
+            opacity: 0;
+            animation: noSteam 3s infinite;
+        }
+
+        @keyframes noSteam {
+
+            0%,
+            100% {
+                opacity: 0.3;
+                transform: translateX(-50%) translateY(0);
+            }
+
+            50% {
+                opacity: 0;
+                transform: translateX(-50%) translateY(-10px);
+            }
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .tagline {
+            font-size: 1.3rem;
+            margin-bottom: 25px;
+            opacity: 0.9;
+        }
+
+        .message-box {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            padding: 25px;
+            border-radius: 20px;
+            margin-bottom: 25px;
+        }
+
+        .message-box p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        .message-box .emoji-line {
+            font-size: 2rem;
+            margin-top: 15px;
+            animation: bounce 1s infinite;
+        }
+
+        @keyframes bounce {
 
             0%,
             100% {
@@ -44,145 +262,158 @@
             }
 
             50% {
-                transform: translateY(-15px);
+                transform: translateY(-10px);
             }
         }
 
-        .wifi-icon {
-            width: 100px;
-            height: 100px;
-            margin-bottom: 30px;
-            position: relative;
-        }
-
-        .wifi-icon::before {
-            content: "📡";
-            font-size: 60px;
-            opacity: 0.5;
-        }
-
-        .wifi-icon::after {
-            content: "❌";
-            font-size: 30px;
-            position: absolute;
-            bottom: 0;
-            right: 0;
-        }
-
-        h1 {
-            font-size: 2.5rem;
-            margin-bottom: 15px;
-            color: #00d9ff;
-        }
-
-        .subtitle {
-            font-size: 1.2rem;
-            color: #aaa;
-            margin-bottom: 30px;
-        }
-
-        .tips {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 25px;
-            border-radius: 15px;
-            margin-bottom: 30px;
-            text-align: left;
-        }
-
-        .tips h3 {
-            margin-bottom: 15px;
-            color: #00d9ff;
-        }
-
-        .tips ul {
-            list-style: none;
-        }
-
-        .tips li {
-            padding: 8px 0;
-            padding-left: 25px;
-            position: relative;
-        }
-
-        .tips li::before {
-            content: "•";
-            color: teal;
-            position: absolute;
-            left: 0;
-            font-size: 20px;
-        }
-
         .retry-btn {
-            background: linear-gradient(135deg, teal, #00796b);
-            color: white;
+            background: white;
+            color: #ff6b6b;
             border: none;
-            padding: 15px 40px;
-            font-size: 1.1rem;
+            padding: 18px 50px;
+            font-size: 1.2rem;
+            font-weight: bold;
             border-radius: 50px;
             cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 5px 20px rgba(0, 128, 128, 0.4);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
         }
 
         .retry-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(0, 128, 128, 0.6);
+            transform: scale(1.05) translateY(-3px);
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.3);
         }
 
-        .retry-btn:active {
-            transform: translateY(0);
+        .retry-btn .icon {
+            animation: spin 2s linear infinite;
+            animation-play-state: paused;
+        }
+
+        .retry-btn:hover .icon {
+            animation-play-state: running;
+        }
+
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Floating food background */
+        .floating-food {
+            position: fixed;
+            font-size: 40px;
+            opacity: 0.4;
+            z-index: 1;
+        }
+
+        .food-1 {
+            top: 10%;
+            left: 5%;
+            animation: float1 8s ease-in-out infinite;
+        }
+
+        .food-2 {
+            top: 20%;
+            right: 10%;
+            animation: float2 7s ease-in-out infinite;
+        }
+
+        .food-3 {
+            bottom: 30%;
+            left: 8%;
+            animation: float1 9s ease-in-out infinite;
+        }
+
+        .food-4 {
+            bottom: 15%;
+            right: 5%;
+            animation: float2 6s ease-in-out infinite;
+        }
+
+        .food-5 {
+            top: 50%;
+            left: 3%;
+            animation: float1 10s ease-in-out infinite;
+        }
+
+        .food-6 {
+            top: 40%;
+            right: 3%;
+            animation: float2 8s ease-in-out infinite;
+        }
+
+        @keyframes float1 {
+
+            0%,
+            100% {
+                transform: translateY(0) rotate(0deg);
+            }
+
+            50% {
+                transform: translateY(-30px) rotate(15deg);
+            }
+        }
+
+        @keyframes float2 {
+
+            0%,
+            100% {
+                transform: translateY(0) rotate(0deg);
+            }
+
+            50% {
+                transform: translateY(-25px) rotate(-15deg);
+            }
         }
 
         .logo {
             position: absolute;
-            top: 30px;
+            top: 25px;
             left: 50%;
             transform: translateX(-50%);
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             font-weight: bold;
-            color: teal;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px 25px;
+            border-radius: 50px;
+            backdrop-filter: blur(5px);
         }
 
-        .food-emojis {
-            position: fixed;
-            font-size: 30px;
-            opacity: 0.3;
-            animation: drift 20s linear infinite;
+        /* Connection status indicator */
+        .status-dot {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            background: #ff4757;
+            border-radius: 50%;
+            margin-right: 8px;
+            animation: blink 1.5s infinite;
         }
 
-        @keyframes drift {
-            0% {
-                transform: translateY(100vh) rotate(0deg);
-            }
+        @keyframes blink {
 
+            0%,
             100% {
-                transform: translateY(-100px) rotate(360deg);
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.3;
             }
         }
 
-        .food-1 {
-            left: 10%;
-            animation-delay: 0s;
-        }
-
-        .food-2 {
-            left: 30%;
-            animation-delay: 5s;
-        }
-
-        .food-3 {
-            left: 50%;
-            animation-delay: 10s;
-        }
-
-        .food-4 {
-            left: 70%;
-            animation-delay: 15s;
-        }
-
-        .food-5 {
-            left: 90%;
-            animation-delay: 3s;
+        .status-text {
+            font-size: 0.9rem;
+            margin-top: 20px;
+            opacity: 0.8;
         }
     </style>
 </head>
@@ -190,37 +421,62 @@
 <body>
     <div class="logo">🍽️ VinoTreats</div>
 
-    <!-- Floating food background -->
-    <span class="food-emojis food-1">🍕</span>
-    <span class="food-emojis food-2">🍔</span>
-    <span class="food-emojis food-3">🍜</span>
-    <span class="food-emojis food-4">🍣</span>
-    <span class="food-emojis food-5">🥗</span>
+    <!-- Floating food decorations -->
+    <span class="floating-food food-1">🍕</span>
+    <span class="floating-food food-2">🍔</span>
+    <span class="floating-food food-3">🍜</span>
+    <span class="floating-food food-4">�</span>
+    <span class="floating-food food-5">🌮</span>
+    <span class="floating-food food-6">🍣</span>
 
     <div class="container">
-        <div class="offline-icon">🍽️</div>
-        <h1>You're Offline</h1>
-        <p class="subtitle">Looks like you've lost your internet connection</p>
+        <!-- Sad Chef Character -->
+        <div class="chef-container">
+            <div class="chef-hat"></div>
+            <div class="chef-head">
+                <div class="chef-eyes">
+                    <div class="eye"></div>
+                    <div class="eye"></div>
+                </div>
+                <div class="chef-mouth"></div>
+            </div>
+            <div class="chef-body"></div>
+        </div>
 
-        <div class="tips">
-            <h3>Quick fixes:</h3>
-            <ul>
-                <li>Check your WiFi or mobile data</li>
-                <li>Try moving closer to your router</li>
-                <li>Restart your internet connection</li>
-                <li>Check if airplane mode is off</li>
-            </ul>
+        <!-- Empty Plate -->
+        <div class="plate-container">
+            <div class="steam">💨</div>
+            <div class="plate"></div>
+        </div>
+
+        <h1>Oops! Kitchen's Disconnected</h1>
+        <p class="tagline">Our chef can't reach the recipe server! 👨‍🍳</p>
+
+        <div class="message-box">
+            <p>
+                Looks like your internet took a food break!<br>
+                Don't worry, your cravings are saved and waiting.
+            </p>
+            <div class="emoji-line">🍳 ➡️ 📶 ➡️ 🍽️</div>
         </div>
 
         <button class="retry-btn" onclick="window.location.reload()">
-            🔄 Try Again
+            <span class="icon">🔄</span> Reconnect & Order!
         </button>
+
+        <p class="status-text">
+            <span class="status-dot"></span>
+            Waiting for connection...
+        </p>
     </div>
 
     <script>
-        // Auto-retry when connection is restored
+        // Auto-reload when back online
         window.addEventListener('online', () => {
-            window.location.reload();
+            document.querySelector('.status-dot').style.background = '#2ed573';
+            document.querySelector('.status-text').innerHTML =
+                '<span class="status-dot" style="background:#2ed573;animation:none"></span> Connected! Reloading...';
+            setTimeout(() => window.location.reload(), 1000);
         });
     </script>
 </body>
