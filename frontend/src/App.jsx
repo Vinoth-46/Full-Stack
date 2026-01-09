@@ -1,5 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
+import axios from 'axios';
 import Navbar from './components/Navbar/Navbar';
 import Home from './pages/Home/Home';
 import Cart from './pages/Cart/Cart';
@@ -13,12 +14,29 @@ import MaintenanceScreen from './components/MaintenanceScreen/MaintenanceScreen'
 import NotFound from './pages/NotFound/NotFound';
 import { StoreContext } from './context/Storecontext';
 
-// Maintenance mode - set VITE_MAINTENANCE_MODE=true in Render env vars to enable
-const MAINTENANCE_MODE = import.meta.env.VITE_MAINTENANCE_MODE === 'true';
-
 const App = () => {
-  const { showLogin, setShowLogin, food_list } = useContext(StoreContext);
+  const { showLogin, setShowLogin, food_list, url } = useContext(StoreContext);
   const [loading, setLoading] = useState(true);
+  const [maintenanceMode, setMaintenanceMode] = useState(false);
+
+  // Check maintenance status from API
+  useEffect(() => {
+    const checkMaintenance = async () => {
+      try {
+        const response = await axios.get(url + '/api/settings/maintenance');
+        if (response.data.success) {
+          setMaintenanceMode(response.data.maintenance);
+        }
+      } catch (error) {
+        console.log('Maintenance check failed, assuming normal mode');
+      }
+    };
+    checkMaintenance();
+
+    // Check every 30 seconds
+    const interval = setInterval(checkMaintenance, 30000);
+    return () => clearInterval(interval);
+  }, [url]);
 
   useEffect(() => {
     // Hide loading screen once food list is loaded
@@ -28,8 +46,8 @@ const App = () => {
     }
   }, [food_list]);
 
-  // Show maintenance screen if enabled
-  if (MAINTENANCE_MODE) {
+  // Show maintenance screen if enabled via Telegram
+  if (maintenanceMode) {
     return <MaintenanceScreen />;
   }
 
@@ -54,5 +72,6 @@ const App = () => {
 };
 
 export default App;
+
 
 

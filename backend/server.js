@@ -9,6 +9,8 @@ import foodRouter from "./routes/foodRoute.js";
 import userRouter from "./routes/userRoute.js";
 import cartRouter from "./routes/cartRoute.js";
 import orderRouter from "./routes/orderRoute.js";
+import settingsRouter from "./routes/settingsRoute.js";
+import { initTelegramBot } from "./services/telegramBot.js";
 dotenv.config();
 
 // Resolve __dirname in ES modules
@@ -26,13 +28,17 @@ app.use(cors());
 app.use("/images", express.static(path.join(__dirname, "uploads")));
 
 // Database
-connectDB();
+connectDB().then(() => {
+  // Initialize Telegram bot after DB is connected
+  initTelegramBot();
+});
 
 // Mount API routers
 app.use("/api/food", foodRouter);
 app.use("/api/user", userRouter);
 app.use("/api/cart", cartRouter);
 app.use("/api/order", orderRouter);
+app.use("/api/settings", settingsRouter);
 
 // Health check endpoint
 app.get("/api/health", (req, res) => res.json({ status: "ok" }));
