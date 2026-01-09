@@ -5,8 +5,8 @@ import Settings from '../models/settingsModel.js';
 const token = process.env.TELEGRAM_BOT_TOKEN;
 let bot = null;
 
-// Authorized admin chat IDs
-let authorizedAdmins = [];
+// ADMIN ONLY - Your Telegram Chat ID
+const ADMIN_ID = 1915596093;
 
 const initTelegramBot = () => {
     if (!token) {
@@ -17,40 +17,55 @@ const initTelegramBot = () => {
     bot = new TelegramBot(token, { polling: true });
     console.log('🤖 Telegram bot started: t.me/VinoTreats_bot');
 
+    // Check if user is admin
+    const isAdmin = (chatId) => chatId === ADMIN_ID;
+
+    // Unauthorized access message
+    const sendUnauthorized = (chatId) => {
+        bot.sendMessage(chatId,
+            `🚫 *Access Denied*\n\nYou are not authorized to use this bot.`,
+            { parse_mode: 'Markdown' }
+        );
+    };
+
     // /start command
     bot.onText(/\/start/i, async (msg) => {
         const chatId = msg.chat.id;
-        const username = msg.from.username || msg.from.first_name;
 
-        if (!authorizedAdmins.includes(chatId)) {
-            authorizedAdmins.push(chatId);
-            await Settings.findOneAndUpdate(
-                { key: 'telegram_admins' },
-                { value: authorizedAdmins, updatedBy: username },
-                { upsert: true }
-            );
+        if (!isAdmin(chatId)) {
+            sendUnauthorized(chatId);
+            return;
         }
+
+        const username = msg.from.username || msg.from.first_name;
 
         bot.sendMessage(chatId,
             `🍽️ *Welcome to VinoTreats Admin Bot!*\n\n` +
-            `Hello ${username}! You're registered as admin.\n\n` +
+            `Hello ${username}! ✅ You are authorized.\n\n` +
             `*Commands:*\n` +
-            `• /maintenance on - Enable maintenance\n` +
-            `• /maintenance off - Disable maintenance\n` +
-            `• /status - Check status\n` +
-            `• /help - Show commands`,
+            `• /maintenance on - 🔴 Enable maintenance\n` +
+            `• /maintenance off - 🟢 Disable maintenance\n` +
+            `• /status - 📊 Check status\n` +
+            `• /help - ❓ Show commands`,
             { parse_mode: 'Markdown' }
         );
     });
 
     // /help command
     bot.onText(/\/help/i, (msg) => {
-        bot.sendMessage(msg.chat.id,
-            `🍽️ *VinoTreats Commands*\n\n` +
-            `• /maintenance on - Enable maintenance mode\n` +
-            `• /maintenance off - Disable maintenance mode\n` +
-            `• /status - Check current status\n` +
-            `• /help - Show this help`,
+        const chatId = msg.chat.id;
+
+        if (!isAdmin(chatId)) {
+            sendUnauthorized(chatId);
+            return;
+        }
+
+        bot.sendMessage(chatId,
+            `🍽️ *VinoTreats Admin Commands*\n\n` +
+            `• /maintenance on - 🔴 Enable maintenance mode\n` +
+            `• /maintenance off - 🟢 Disable maintenance mode\n` +
+            `• /status - 📊 Check current status\n` +
+            `• /help - ❓ Show this help`,
             { parse_mode: 'Markdown' }
         );
     });
@@ -58,6 +73,12 @@ const initTelegramBot = () => {
     // /maintenance on command
     bot.onText(/\/maintenance\s+on/i, async (msg) => {
         const chatId = msg.chat.id;
+
+        if (!isAdmin(chatId)) {
+            sendUnauthorized(chatId);
+            return;
+        }
+
         const username = msg.from.username || msg.from.first_name;
 
         await Settings.findOneAndUpdate(
@@ -67,10 +88,10 @@ const initTelegramBot = () => {
         );
 
         bot.sendMessage(chatId,
-            `🔧 *Maintenance Mode ENABLED*\n\n` +
+            `🔧 *Maintenance Mode ENABLED* 🔴\n\n` +
             `✅ Website is now in maintenance mode.\n` +
             `👤 Changed by: ${username}\n\n` +
-            `Users will see the maintenance screen.`,
+            `🌐 Users will see the maintenance screen.`,
             { parse_mode: 'Markdown' }
         );
     });
@@ -78,6 +99,12 @@ const initTelegramBot = () => {
     // /maintenance off command
     bot.onText(/\/maintenance\s+off/i, async (msg) => {
         const chatId = msg.chat.id;
+
+        if (!isAdmin(chatId)) {
+            sendUnauthorized(chatId);
+            return;
+        }
+
         const username = msg.from.username || msg.from.first_name;
 
         await Settings.findOneAndUpdate(
@@ -87,8 +114,8 @@ const initTelegramBot = () => {
         );
 
         bot.sendMessage(chatId,
-            `✅ *Maintenance Mode DISABLED*\n\n` +
-            `🟢 Website is now LIVE!\n` +
+            `✅ *Maintenance Mode DISABLED* 🟢\n\n` +
+            `🌐 Website is now LIVE!\n` +
             `👤 Changed by: ${username}\n\n` +
             `Users can access the website normally.`,
             { parse_mode: 'Markdown' }
@@ -97,6 +124,13 @@ const initTelegramBot = () => {
 
     // /status command
     bot.onText(/\/status/i, async (msg) => {
+        const chatId = msg.chat.id;
+
+        if (!isAdmin(chatId)) {
+            sendUnauthorized(chatId);
+            return;
+        }
+
         const setting = await Settings.findOne({ key: 'maintenance_mode' });
         const isOn = setting?.value || false;
         const by = setting?.updatedBy || 'Not set yet';
@@ -104,17 +138,19 @@ const initTelegramBot = () => {
             ? new Date(setting.updatedAt).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })
             : 'Never';
 
-        bot.sendMessage(msg.chat.id,
+        bot.sendMessage(chatId,
             `📊 *VinoTreats Status*\n\n` +
             `🔧 Maintenance: ${isOn ? '🔴 ON' : '🟢 OFF'}\n` +
             `👤 Last changed by: ${by}\n` +
-            `🕐 Updated: ${updatedAt}`,
+            `🕐 Updated: ${updatedAt}\n\n` +
+            `🌐 Website: https://full-stack-yldm.onrender.com`,
             { parse_mode: 'Markdown' }
         );
     });
 
-    // Handle unknown commands
+    // Handle unknown commands - only for admin
     bot.on('message', (msg) => {
+        const chatId = msg.chat.id;
         const text = msg.text || '';
 
         // Skip if it's a known command
@@ -124,7 +160,12 @@ const initTelegramBot = () => {
 
         // Only respond to messages starting with /
         if (text.startsWith('/')) {
-            bot.sendMessage(msg.chat.id,
+            if (!isAdmin(chatId)) {
+                sendUnauthorized(chatId);
+                return;
+            }
+
+            bot.sendMessage(chatId,
                 `❓ Unknown command: ${text}\n\n` +
                 `Available commands:\n` +
                 `• /maintenance on\n` +
@@ -133,11 +174,6 @@ const initTelegramBot = () => {
                 `• /help`
             );
         }
-    });
-
-    // Load admins from DB
-    Settings.findOne({ key: 'telegram_admins' }).then(s => {
-        if (s?.value) authorizedAdmins = s.value;
     });
 };
 
