@@ -105,6 +105,12 @@ const Cart = () => {
           >
             PROCEED TO CHECKOUT
           </button>
+          <button
+            onClick={() => navigate('/#explore-menu')}
+            className="continue-shopping-btn"
+          >
+            ← Continue Shopping
+          </button>
         </div>
 
         <div className="cart-promocode">

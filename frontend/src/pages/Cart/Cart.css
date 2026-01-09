@@ -96,6 +96,18 @@
   cursor: not-allowed !important;
 }
 
+.continue-shopping-btn {
+  background-color: transparent !important;
+  color: teal !important;
+  border: 2px solid teal !important;
+  margin-top: 10px;
+}
+
+.continue-shopping-btn:hover {
+  background-color: teal !important;
+  color: white !important;
+}
+
 .cart .empty-message {
   padding: 40px;
   font-size: 18px;
