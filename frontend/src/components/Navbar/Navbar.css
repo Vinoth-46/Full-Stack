@@ -93,6 +93,13 @@
   transition: filter 0.2s ease-in-out;
 }
 
+.navbar-profile>img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
 .navbar-profile:hover {
   filter: brightness(0.9);
 }
@@ -215,6 +222,11 @@
   .navbar-right>img {
     width: 20px;
   }
+
+  .navbar-profile>img {
+    width: 32px;
+    height: 32px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -233,6 +245,11 @@
   .navbar-right>button {
     padding: 6px 15px;
     font-size: 12px;
+  }
+
+  .navbar-profile>img {
+    width: 28px;
+    height: 28px;
   }
 
   .nav-profile-dropdown {

@@ -16,27 +16,125 @@
     text-align: center;
 }
 
-/* Pan Animation */
+/* Chef Animation Container */
 .chef-animation {
     position: relative;
-    width: 150px;
-    height: 150px;
+    width: 200px;
+    height: 220px;
     margin: 0 auto 30px;
 }
 
-.pan {
+/* Chef Character */
+.chef {
     position: absolute;
+    left: 20px;
     bottom: 40px;
+}
+
+/* Chef Hat */
+.chef-hat {
+    position: relative;
+    width: 60px;
+    margin: 0 auto;
+}
+
+.hat-top {
+    width: 50px;
+    height: 40px;
+    background: #fff;
+    border-radius: 50% 50% 45% 45%;
+    margin: 0 auto;
+    box-shadow: inset 0 -5px 10px rgba(0, 0, 0, 0.1);
+}
+
+.hat-band {
+    width: 60px;
+    height: 12px;
+    background: #fff;
+    border-radius: 3px;
+    margin-top: -2px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Chef Face */
+.chef-face {
+    width: 50px;
+    height: 45px;
+    background: #ffd699;
+    border-radius: 50% 50% 45% 45%;
+    margin: 5px auto 0;
+    position: relative;
+}
+
+.chef-eye {
+    width: 6px;
+    height: 6px;
+    background: #333;
+    border-radius: 50%;
+    position: absolute;
+    top: 15px;
+    animation: blink 3s infinite;
+}
+
+.chef-eye.left {
+    left: 12px;
+}
+
+.chef-eye.right {
+    right: 12px;
+}
+
+.chef-smile {
+    width: 15px;
+    height: 8px;
+    border: 2px solid #333;
+    border-top: none;
+    border-radius: 0 0 15px 15px;
+    position: absolute;
+    bottom: 10px;
     left: 50%;
     transform: translateX(-50%);
-    animation: panShake 0.5s ease-in-out infinite;
+}
+
+/* Chef Body */
+.chef-body {
+    width: 55px;
+    height: 50px;
+    background: #fff;
+    border-radius: 10px 10px 20px 20px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.chef-body::before {
+    content: "";
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 3px;
+    height: 25px;
+    background: linear-gradient(180deg, #333 0%, #333 33%, transparent 33%, transparent 66%, #333 66%);
+}
+
+/* Chef Arm with Pan */
+.chef-arm {
+    position: absolute;
+    right: -80px;
+    top: 60px;
+    animation: armShake 0.6s ease-in-out infinite;
+    transform-origin: left center;
+}
+
+.pan {
+    position: relative;
 }
 
 .pan-body {
-    width: 80px;
-    height: 25px;
+    width: 70px;
+    height: 20px;
     background: linear-gradient(180deg, #4a4a4a 0%, #2d2d2d 100%);
-    border-radius: 0 0 40px 40px;
+    border-radius: 0 0 35px 35px;
     position: relative;
     overflow: hidden;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
@@ -44,46 +142,34 @@
 
 .pan-handle {
     position: absolute;
-    right: -45px;
-    top: 5px;
-    width: 50px;
-    height: 12px;
+    left: -35px;
+    top: 3px;
+    width: 40px;
+    height: 10px;
     background: linear-gradient(180deg, #8B4513 0%, #654321 100%);
     border-radius: 5px;
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
 }
 
-/* Food items jumping in pan */
-.food-item {
+/* Toast items flipping in pan */
+.toast {
     position: absolute;
-    border-radius: 50%;
-    animation: foodJump 0.6s ease-in-out infinite;
+    width: 20px;
+    height: 15px;
+    background: linear-gradient(180deg, #d4a574 0%, #c4956a 50%, #8B6914 100%);
+    border-radius: 3px;
+    animation: toastFlip 0.8s ease-in-out infinite;
 }
 
-.food-1 {
-    width: 15px;
-    height: 15px;
-    background: linear-gradient(135deg, #ff6b6b 0%, #ee5a5a 100%);
-    left: 10px;
-    bottom: 5px;
+.toast-1 {
+    left: 12px;
+    bottom: 3px;
     animation-delay: 0s;
 }
 
-.food-2 {
-    width: 12px;
-    height: 12px;
-    background: linear-gradient(135deg, #ffd93d 0%, #f9c846 100%);
-    left: 35px;
-    bottom: 8px;
-    animation-delay: 0.2s;
-}
-
-.food-3 {
-    width: 14px;
-    height: 14px;
-    background: linear-gradient(135deg, #6bcb77 0%, #4ade80 100%);
-    left: 55px;
-    bottom: 4px;
+.toast-2 {
+    left: 38px;
+    bottom: 3px;
     animation-delay: 0.4s;
 }
 
@@ -91,59 +177,64 @@
 .steam {
     position: absolute;
     width: 8px;
-    height: 20px;
-    background: rgba(255, 255, 255, 0.6);
+    height: 15px;
+    background: rgba(255, 255, 255, 0.7);
     border-radius: 50%;
     filter: blur(3px);
-    animation: steamRise 1.5s ease-out infinite;
+    animation: steamRise 1.2s ease-out infinite;
+    right: 40px;
 }
 
 .steam-1 {
-    left: 15px;
-    bottom: 30px;
+    bottom: 100px;
     animation-delay: 0s;
 }
 
 .steam-2 {
-    left: 35px;
-    bottom: 35px;
+    right: 55px;
+    bottom: 105px;
     animation-delay: 0.3s;
 }
 
 .steam-3 {
-    left: 55px;
-    bottom: 30px;
+    right: 25px;
+    bottom: 100px;
     animation-delay: 0.6s;
 }
 
-/* Flames */
-.flame {
+/* Stove and Flames */
+.stove {
     position: absolute;
     bottom: 0;
+    right: 30px;
+    width: 80px;
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+}
+
+.flame {
     border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
     animation: flameFlicker 0.3s ease-in-out infinite alternate;
 }
 
 .flame-1 {
-    left: 20px;
-    width: 15px;
-    height: 25px;
+    width: 12px;
+    height: 22px;
     background: linear-gradient(180deg, #ff9500 0%, #ff5e00 50%, #cc0000 100%);
     animation-delay: 0s;
 }
 
 .flame-2 {
-    left: 45px;
-    width: 20px;
-    height: 35px;
+    width: 16px;
+    height: 30px;
     background: linear-gradient(180deg, #ffcc00 0%, #ff9500 50%, #ff5e00 100%);
     animation-delay: 0.1s;
 }
 
 .flame-3 {
-    left: 70px;
-    width: 12px;
-    height: 22px;
+    width: 10px;
+    height: 18px;
     background: linear-gradient(180deg, #ff9500 0%, #ff5e00 50%, #cc0000 100%);
     animation-delay: 0.2s;
 }
@@ -151,7 +242,7 @@
 /* Loading Text */
 .loading-text {
     color: #ffffff;
-    font-size: 1.4rem;
+    font-size: 1.3rem;
     font-weight: 500;
     margin-bottom: 20px;
     text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
@@ -185,27 +276,41 @@
 }
 
 /* Animations */
-@keyframes panShake {
+@keyframes armShake {
 
     0%,
     100% {
-        transform: translateX(-50%) rotate(-2deg);
+        transform: rotate(-3deg);
     }
 
     50% {
-        transform: translateX(-50%) rotate(2deg);
+        transform: rotate(3deg);
     }
 }
 
-@keyframes foodJump {
+@keyframes toastFlip {
 
     0%,
     100% {
-        transform: translateY(0);
+        transform: translateY(0) rotateX(0);
     }
 
     50% {
-        transform: translateY(-20px) rotate(180deg);
+        transform: translateY(-25px) rotateX(180deg);
+    }
+}
+
+@keyframes blink {
+
+    0%,
+    45%,
+    55%,
+    100% {
+        transform: scaleY(1);
+    }
+
+    50% {
+        transform: scaleY(0.1);
     }
 }
 
@@ -217,7 +322,7 @@
 
     100% {
         opacity: 0;
-        transform: translateY(-40px) scale(1.5);
+        transform: translateY(-35px) scale(1.5);
     }
 }
 
@@ -254,5 +359,16 @@
     100% {
         opacity: 0;
         pointer-events: none;
+    }
+}
+
+/* Mobile adjustments */
+@media (max-width: 480px) {
+    .chef-animation {
+        transform: scale(0.8);
+    }
+
+    .loading-text {
+        font-size: 1.1rem;
     }
 }

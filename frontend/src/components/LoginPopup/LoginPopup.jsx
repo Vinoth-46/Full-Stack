@@ -3,6 +3,7 @@ import './LoginPopup.css';
 import { assets } from '../../assets/assets';
 import { StoreContext } from '../../context/Storecontext';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 const LoginPopup = ({ setShowLogin }) => {
   const { url, setToken } = useContext(StoreContext);
@@ -37,17 +38,17 @@ const LoginPopup = ({ setShowLogin }) => {
       const result = response.data;
 
       if (result.success) {
-        alert(result.message);
+        toast.success(result.message);
         localStorage.setItem("token", result.token);
         localStorage.setItem("user", JSON.stringify(result.user)); // Ensure user object excludes sensitive data
         setToken(result.token);
         setShowLogin(false);
       } else {
-        alert(result.message || "Something went wrong.");
+        toast.error(result.message || "Something went wrong.");
       }
     } catch (error) {
       const message = error.response?.data?.message || "Server error. Please try again later.";
-      alert(message);
+      toast.error(message);
     } finally {
       setLoading(false);
     }
