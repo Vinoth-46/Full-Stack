@@ -17,12 +17,16 @@ const ExploreMenu = ({ category, setCatgory }) => {
             onClick={() => setCatgory(prev => prev === item.menu_name ? "All" : item.menu_name)}
           >
             <img
-              className={category === item.menu_name ? "active" : ""} src={item.menu_image} alt={item.menu_name} />
-             <p>{item.menu_name}</p>
+              className={category === item.menu_name ? "active" : ""}
+              src={item.menu_image}
+              alt={item.menu_name}
+              loading="lazy"
+            />
+            <p>{item.menu_name}</p>
           </div>
         ))}
       </div>
-      <hr/>
+      <hr />
     </div>
   )
 }
