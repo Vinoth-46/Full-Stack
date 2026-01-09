@@ -4,12 +4,29 @@ import Stripe from "stripe";
 import dotenv from "dotenv";
 
 dotenv.config();
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
-const frontend_url = process.env.FRONTEND_URL || "https://food-del-frontend-zu83.onrender.com";
+
+// Initialize Stripe only if key is provided
+const stripe = process.env.STRIPE_SECRET_KEY
+  ? new Stripe(process.env.STRIPE_SECRET_KEY)
+  : null;
+
+if (!stripe) {
+  console.warn('⚠️ STRIPE_SECRET_KEY not set - Payment features disabled');
+}
+
+const frontend_url = process.env.FRONTEND_URL || "https://full-stack-yldm.onrender.com";
 
 // ========== Place Order ==========
 const placeOrder = async (req, res) => {
   try {
+    // Check if Stripe is configured
+    if (!stripe) {
+      return res.status(503).json({
+        success: false,
+        message: "Payment service is not configured. Please contact admin."
+      });
+    }
+
     const userId = req.userId;
     const { items, amount, address } = req.body;
 
