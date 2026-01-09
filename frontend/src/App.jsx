@@ -14,13 +14,10 @@ import MaintenanceScreen from './components/MaintenanceScreen/MaintenanceScreen'
 import NotFound from './pages/NotFound/NotFound';
 import { StoreContext } from './context/Storecontext';
 
-// Environment variable maintenance mode (quick toggle via Render)
-const ENV_MAINTENANCE = import.meta.env.VITE_MAINTENANCE_MODE === 'true';
-
 const App = () => {
   const { showLogin, setShowLogin, food_list, url } = useContext(StoreContext);
   const [loading, setLoading] = useState(true);
-  const [telegramMaintenance, setTelegramMaintenance] = useState(false);
+  const [maintenanceMode, setMaintenanceMode] = useState(false);
 
   // Check maintenance status from Telegram bot API
   useEffect(() => {
@@ -28,10 +25,10 @@ const App = () => {
       try {
         const response = await axios.get(url + '/api/settings/maintenance');
         if (response.data.success) {
-          setTelegramMaintenance(response.data.maintenance);
+          setMaintenanceMode(response.data.maintenance);
         }
       } catch (error) {
-        console.log('Maintenance check failed, using env variable only');
+        console.log('Maintenance check failed');
       }
     };
     checkMaintenance();
@@ -49,8 +46,8 @@ const App = () => {
     }
   }, [food_list]);
 
-  // Show maintenance if EITHER env variable OR Telegram bot says so
-  if (ENV_MAINTENANCE || telegramMaintenance) {
+  // Show maintenance screen (controlled by Telegram bot only)
+  if (maintenanceMode) {
     return <MaintenanceScreen />;
   }
 
