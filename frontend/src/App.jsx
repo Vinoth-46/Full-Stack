@@ -9,7 +9,12 @@ import LoginPopup from './components/LoginPopup/LoginPopup';
 import Verify from './pages/Verify/Verify';
 import MyOrders from './pages/MyOrders/MyOrders';
 import LoadingScreen from './components/LoadingScreen/LoadingScreen';
+import MaintenanceScreen from './components/MaintenanceScreen/MaintenanceScreen';
+import NotFound from './pages/NotFound/NotFound';
 import { StoreContext } from './context/Storecontext';
+
+// Set this to true to enable maintenance mode
+const MAINTENANCE_MODE = false;
 
 const App = () => {
   const { showLogin, setShowLogin, food_list } = useContext(StoreContext);
@@ -23,6 +28,11 @@ const App = () => {
     }
   }, [food_list]);
 
+  // Show maintenance screen if enabled
+  if (MAINTENANCE_MODE) {
+    return <MaintenanceScreen />;
+  }
+
   return (
     <>
       {loading && <LoadingScreen />}
@@ -35,7 +45,7 @@ const App = () => {
           <Route path='/order' element={<PlaceOrder />} />
           <Route path='/verify' element={<Verify />} />
           <Route path='/myorders' element={<MyOrders />} />
-
+          <Route path='*' element={<NotFound />} />
         </Routes>
       </div>
       <Footer />
@@ -44,4 +54,5 @@ const App = () => {
 };
 
 export default App;
+
 

@@ -1,0 +1,263 @@
+.maintenance-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #ff9a56 0%, #ff6b35 50%, #f7931e 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 99999;
+}
+
+.maintenance-content {
+    text-align: center;
+    padding: 40px;
+}
+
+/* Chef Working Animation */
+.maintenance-animation {
+    position: relative;
+    width: 200px;
+    height: 180px;
+    margin: 0 auto 30px;
+}
+
+.chef-working {
+    position: absolute;
+    left: 40px;
+    bottom: 40px;
+}
+
+.chef-hat-m {
+    width: 40px;
+    height: 30px;
+    background: #fff;
+    border-radius: 50% 50% 30% 30%;
+    margin: 0 auto;
+}
+
+.chef-hat-m::after {
+    content: '';
+    position: absolute;
+    width: 50px;
+    height: 10px;
+    background: #fff;
+    border-radius: 3px;
+    top: 28px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.chef-head {
+    width: 40px;
+    height: 35px;
+    background: #ffd699;
+    border-radius: 50%;
+    margin: 8px auto 0;
+}
+
+.chef-body-m {
+    width: 50px;
+    height: 45px;
+    background: #fff;
+    border-radius: 10px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.chef-arm-left,
+.chef-arm-right {
+    position: absolute;
+    width: 35px;
+    height: 8px;
+    background: #ffd699;
+    border-radius: 4px;
+    top: 10px;
+    animation: armWork 0.5s ease-in-out infinite;
+}
+
+.chef-arm-left {
+    left: -30px;
+    transform-origin: right center;
+}
+
+.chef-arm-right {
+    right: -30px;
+    transform-origin: left center;
+    animation-delay: 0.25s;
+}
+
+/* Work Bench */
+.work-bench {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    height: 20px;
+    background: #8B4513;
+    border-radius: 5px;
+}
+
+.tools {
+    position: absolute;
+    right: 20px;
+    bottom: 25px;
+}
+
+.wrench,
+.hammer {
+    width: 25px;
+    height: 6px;
+    background: #666;
+    border-radius: 3px;
+    margin: 5px 0;
+    animation: toolBounce 0.8s ease-in-out infinite;
+}
+
+.hammer {
+    animation-delay: 0.4s;
+}
+
+/* Gears */
+.gears {
+    position: absolute;
+    right: 30px;
+    top: 20px;
+}
+
+.gear {
+    width: 30px;
+    height: 30px;
+    border: 4px solid #fff;
+    border-radius: 50%;
+    position: relative;
+    animation: gearRotate 2s linear infinite;
+}
+
+.gear::before,
+.gear::after {
+    content: '';
+    position: absolute;
+    background: #fff;
+}
+
+.gear::before {
+    width: 100%;
+    height: 4px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.gear::after {
+    width: 4px;
+    height: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.gear-1 {
+    animation-direction: normal;
+}
+
+.gear-2 {
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    top: 25px;
+    left: 25px;
+    animation-direction: reverse;
+    animation-duration: 1.5s;
+}
+
+/* Text Styles */
+.maintenance-title {
+    color: #fff;
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 15px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.maintenance-text {
+    color: #fff;
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.maintenance-subtext {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.95rem;
+    margin-bottom: 25px;
+}
+
+.maintenance-timer {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 12px 25px;
+    border-radius: 50px;
+    color: #fff;
+    font-weight: 500;
+}
+
+.timer-icon {
+    font-size: 1.3rem;
+}
+
+/* Animations */
+@keyframes armWork {
+
+    0%,
+    100% {
+        transform: rotate(-10deg);
+    }
+
+    50% {
+        transform: rotate(10deg);
+    }
+}
+
+@keyframes toolBounce {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-5px);
+    }
+}
+
+@keyframes gearRotate {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+    .maintenance-title {
+        font-size: 1.5rem;
+    }
+
+    .maintenance-text {
+        font-size: 1rem;
+        padding: 0 20px;
+    }
+
+    .maintenance-animation {
+        transform: scale(0.85);
+    }
+}
