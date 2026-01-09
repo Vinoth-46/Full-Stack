@@ -9,241 +9,235 @@
     justify-content: center;
     align-items: center;
     z-index: 9999;
-    animation: fadeOut 0.5s ease-out 2s forwards;
+    animation: fadeOut 0.5s ease-out 2.5s forwards;
 }
 
 .loading-content {
     text-align: center;
 }
 
-/* Chef Animation Container */
-.chef-animation {
-    position: relative;
-    width: 180px;
-    height: 200px;
-    margin: 0 auto 30px;
+/* Cooking Scene - flexbox layout */
+.cooking-scene {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 30px;
+    height: 180px;
 }
 
-/* Chef Character - centered */
-.chef {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    bottom: 50px;
+/* ========== CHEF CHARACTER ========== */
+.chef-character {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-/* Chef Hat */
 .chef-hat {
-    position: relative;
-    width: 60px;
-    margin: 0 auto;
-}
-
-.hat-top {
-    width: 50px;
+    width: 45px;
     height: 35px;
-    background: #fff;
-    border-radius: 50% 50% 40% 40%;
-    margin: 0 auto;
-    box-shadow: inset 0 -5px 10px rgba(0, 0, 0, 0.1);
+    background: #ffffff;
+    border-radius: 50% 50% 30% 30%;
+    position: relative;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
 }
 
-.hat-band {
-    width: 56px;
-    height: 10px;
-    background: #fff;
+.chef-hat::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: -5px;
+    width: 55px;
+    height: 12px;
+    background: #ffffff;
     border-radius: 3px;
-    margin: -2px auto 0;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
-/* Chef Face */
 .chef-face {
-    width: 48px;
-    height: 42px;
+    width: 45px;
+    height: 40px;
     background: #ffd699;
     border-radius: 50% 50% 45% 45%;
-    margin: 3px auto 0;
+    margin-top: 8px;
     position: relative;
 }
 
-.chef-eye {
+.eye {
     width: 5px;
     height: 5px;
     background: #333;
     border-radius: 50%;
     position: absolute;
-    top: 14px;
+    top: 12px;
     animation: blink 3s infinite;
 }
 
-.chef-eye.left {
-    left: 12px;
+.left-eye {
+    left: 10px;
 }
 
-.chef-eye.right {
-    right: 12px;
+.right-eye {
+    right: 10px;
 }
 
-.chef-smile {
-    width: 14px;
-    height: 7px;
+.smile {
+    width: 12px;
+    height: 6px;
     border: 2px solid #333;
     border-top: none;
-    border-radius: 0 0 14px 14px;
+    border-radius: 0 0 12px 12px;
     position: absolute;
-    bottom: 10px;
+    bottom: 8px;
     left: 50%;
     transform: translateX(-50%);
 }
 
-/* Chef Body */
 .chef-body {
-    width: 52px;
-    height: 45px;
-    background: #fff;
+    width: 50px;
+    height: 50px;
+    background: #ffffff;
     border-radius: 8px 8px 15px 15px;
-    margin: 0 auto;
     position: relative;
+    margin-top: 2px;
 }
 
 .chef-body::before {
-    content: "";
+    content: '';
     position: absolute;
-    top: 8px;
     left: 50%;
     transform: translateX(-50%);
+    top: 8px;
     width: 3px;
-    height: 22px;
-    background: linear-gradient(180deg, #333 0%, #333 30%, transparent 30%, transparent 60%, #333 60%);
+    height: 30px;
+    background: repeating-linear-gradient(180deg,
+            #333 0px,
+            #333 8px,
+            transparent 8px,
+            transparent 16px);
 }
 
-/* Chef Arm with Pan - positioned to the right side */
-.chef-arm {
-    position: absolute;
-    right: -75px;
-    top: 55px;
-    animation: cookingMotion 0.8s ease-in-out infinite;
-    transform-origin: left center;
-}
-
-/* Pan */
-.pan {
+/* ========== COOKING AREA ========== */
+.cooking-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     position: relative;
-    transform: rotate(-5deg);
 }
 
-.pan-body {
-    width: 65px;
-    height: 18px;
-    background: linear-gradient(180deg, #5a5a5a 0%, #3d3d3d 50%, #2a2a2a 100%);
-    border-radius: 0 0 32px 32px;
+.pan-wrapper {
     position: relative;
-    overflow: visible;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    animation: panShake 0.5s ease-in-out infinite;
+}
+
+/* Frying Pan */
+.frying-pan {
+    width: 80px;
+    height: 25px;
+    background: linear-gradient(180deg, #5a5a5a 0%, #3a3a3a 50%, #2a2a2a 100%);
+    border-radius: 0 0 40px 40px;
+    position: relative;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
 }
 
 .pan-handle {
     position: absolute;
-    left: -32px;
-    top: 4px;
-    width: 35px;
-    height: 8px;
+    left: -40px;
+    top: 8px;
+    width: 45px;
+    height: 10px;
     background: linear-gradient(180deg, #a0522d 0%, #8B4513 50%, #654321 100%);
-    border-radius: 4px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    border-radius: 5px 0 0 5px;
+    box-shadow: -2px 2px 5px rgba(0, 0, 0, 0.3);
 }
 
-/* Toast items flipping in pan */
-.toast {
+/* Food pieces flipping */
+.food-piece {
     position: absolute;
-    width: 18px;
-    height: 14px;
-    background: linear-gradient(135deg, #e8c88b 0%, #d4a574 50%, #c49a6c 100%);
-    border-radius: 3px;
-    border: 1px solid #b8956a;
-    animation: toastFlip 0.7s ease-in-out infinite;
+    width: 20px;
+    height: 15px;
+    background: linear-gradient(135deg, #f4d9a0 0%, #d4a574 50%, #c49664 100%);
+    border-radius: 4px;
+    top: -8px;
+    animation: foodFlip 0.7s ease-in-out infinite;
 }
 
-.toast-1 {
-    left: 10px;
-    top: -5px;
+.food-1 {
+    left: 15px;
     animation-delay: 0s;
 }
 
-.toast-2 {
-    left: 36px;
-    top: -5px;
+.food-2 {
+    left: 45px;
     animation-delay: 0.35s;
 }
 
-/* Steam - positioned above the pan */
-.steam {
+/* Steam Container - above pan */
+.steam-container {
     position: absolute;
-    width: 6px;
-    height: 12px;
+    top: -40px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 8px;
+}
+
+.steam {
+    width: 8px;
+    height: 15px;
     background: rgba(255, 255, 255, 0.7);
     border-radius: 50%;
     filter: blur(2px);
-    animation: steamRise 1s ease-out infinite;
+    animation: steamRise 1.2s ease-out infinite;
 }
 
-.steam-1 {
-    right: 35px;
-    bottom: 85px;
+.s1 {
     animation-delay: 0s;
 }
 
-.steam-2 {
-    right: 50px;
-    bottom: 88px;
-    animation-delay: 0.25s;
+.s2 {
+    animation-delay: 0.3s;
+    height: 12px;
 }
 
-.steam-3 {
-    right: 65px;
-    bottom: 85px;
-    animation-delay: 0.5s;
+.s3 {
+    animation-delay: 0.6s;
 }
 
-/* Stove and Flames - positioned under the pan */
-.stove {
-    position: absolute;
-    bottom: 20px;
-    right: 22px;
-    width: 70px;
+/* Flames - below pan */
+.flames {
     display: flex;
     justify-content: center;
-    gap: 4px;
+    gap: 5px;
+    margin-top: 8px;
 }
 
-.flame {
+.fire {
     border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
-    animation: flameFlicker 0.25s ease-in-out infinite alternate;
+    animation: flameFlicker 0.2s ease-in-out infinite alternate;
 }
 
-.flame-1 {
-    width: 10px;
-    height: 18px;
-    background: linear-gradient(180deg, #ffdd00 0%, #ff9500 40%, #ff5e00 70%, #cc3300 100%);
+.f1 {
+    width: 12px;
+    height: 20px;
+    background: linear-gradient(180deg, #ffdd00 0%, #ff9500 50%, #ff5500 100%);
     animation-delay: 0s;
 }
 
-.flame-2 {
-    width: 14px;
-    height: 26px;
-    background: linear-gradient(180deg, #ffee00 0%, #ffcc00 30%, #ff9500 60%, #ff5e00 100%);
+.f2 {
+    width: 16px;
+    height: 28px;
+    background: linear-gradient(180deg, #ffee00 0%, #ffaa00 40%, #ff6600 100%);
     animation-delay: 0.1s;
 }
 
-.flame-3 {
-    width: 10px;
-    height: 16px;
-    background: linear-gradient(180deg, #ffdd00 0%, #ff9500 40%, #ff5e00 70%, #cc3300 100%);
+.f3 {
+    width: 12px;
+    height: 18px;
+    background: linear-gradient(180deg, #ffdd00 0%, #ff9500 50%, #ff5500 100%);
     animation-delay: 0.15s;
 }
 
-/* Loading Text */
+/* ========== LOADING TEXT ========== */
 .loading-text {
     color: #ffffff;
     font-size: 1.3rem;
@@ -280,38 +274,36 @@
     animation-delay: 0.4s;
 }
 
-/* Animations */
-@keyframes cookingMotion {
+/* ========== ANIMATIONS ========== */
+@keyframes panShake {
 
     0%,
     100% {
-        transform: rotate(-8deg) translateY(0);
+        transform: rotate(-3deg);
     }
 
     50% {
-        transform: rotate(5deg) translateY(-3px);
+        transform: rotate(3deg);
     }
 }
 
-@keyframes toastFlip {
+@keyframes foodFlip {
 
     0%,
     100% {
-        transform: translateY(0) rotateX(0) scale(1);
-        opacity: 1;
+        transform: translateY(0) rotate(0deg);
     }
 
     50% {
-        transform: translateY(-22px) rotateX(180deg) scale(0.9);
-        opacity: 0.9;
+        transform: translateY(-25px) rotate(180deg);
     }
 }
 
 @keyframes blink {
 
     0%,
-    42%,
-    58%,
+    45%,
+    55%,
     100% {
         transform: scaleY(1);
     }
@@ -323,25 +315,23 @@
 
 @keyframes steamRise {
     0% {
-        opacity: 0.7;
+        opacity: 0.8;
         transform: translateY(0) scale(1);
     }
 
     100% {
         opacity: 0;
-        transform: translateY(-25px) scale(1.8);
+        transform: translateY(-30px) scale(1.5);
     }
 }
 
 @keyframes flameFlicker {
     0% {
         transform: scaleY(1) scaleX(1);
-        opacity: 1;
     }
 
     100% {
         transform: scaleY(1.15) scaleX(0.85);
-        opacity: 0.9;
     }
 }
 
@@ -373,7 +363,7 @@
 
 /* Mobile adjustments */
 @media (max-width: 480px) {
-    .chef-animation {
+    .cooking-scene {
         transform: scale(0.85);
     }
 

@@ -5,42 +5,40 @@ const LoadingScreen = () => {
     return (
         <div className="loading-screen">
             <div className="loading-content">
-                {/* Animated Chef with Pan */}
-                <div className="chef-animation">
-                    {/* Chef Body */}
-                    <div className="chef">
-                        <div className="chef-hat">
-                            <div className="hat-top"></div>
-                            <div className="hat-band"></div>
-                        </div>
+                {/* Simple Chef Cooking Animation */}
+                <div className="cooking-scene">
+                    {/* Chef */}
+                    <div className="chef-character">
+                        <div className="chef-hat"></div>
                         <div className="chef-face">
-                            <div className="chef-eye left"></div>
-                            <div className="chef-eye right"></div>
-                            <div className="chef-smile"></div>
+                            <div className="eye left-eye"></div>
+                            <div className="eye right-eye"></div>
+                            <div className="smile"></div>
                         </div>
                         <div className="chef-body"></div>
-                        {/* Chef's arm holding pan */}
-                        <div className="chef-arm">
-                            <div className="pan">
-                                <div className="pan-handle"></div>
-                                <div className="pan-body">
-                                    <div className="toast toast-1"></div>
-                                    <div className="toast toast-2"></div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
 
-                    {/* Steam from pan */}
-                    <div className="steam steam-1"></div>
-                    <div className="steam steam-2"></div>
-                    <div className="steam steam-3"></div>
-
-                    {/* Flames under pan */}
-                    <div className="stove">
-                        <div className="flame flame-1"></div>
-                        <div className="flame flame-2"></div>
-                        <div className="flame flame-3"></div>
+                    {/* Pan with food - next to chef */}
+                    <div className="cooking-area">
+                        <div className="pan-wrapper">
+                            <div className="frying-pan">
+                                <div className="pan-handle"></div>
+                                <div className="food-piece food-1"></div>
+                                <div className="food-piece food-2"></div>
+                            </div>
+                            {/* Steam above pan */}
+                            <div className="steam-container">
+                                <div className="steam s1"></div>
+                                <div className="steam s2"></div>
+                                <div className="steam s3"></div>
+                            </div>
+                        </div>
+                        {/* Flames below pan */}
+                        <div className="flames">
+                            <div className="fire f1"></div>
+                            <div className="fire f2"></div>
+                            <div className="fire f3"></div>
+                        </div>
                     </div>
                 </div>
 
