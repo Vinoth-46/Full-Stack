@@ -77,6 +77,28 @@ const initTelegramBot = () => {
         );
     });
 
+    // /maintenance alone (from menu) - show usage
+    bot.onText(/^\/maintenance$/i, async (msg) => {
+        const chatId = msg.chat.id;
+
+        if (!isAdmin(chatId)) {
+            sendUnauthorized(chatId);
+            return;
+        }
+
+        // Get current status
+        const setting = await Settings.findOne({ key: 'maintenance_mode' });
+        const isOn = setting?.value || false;
+
+        bot.sendMessage(chatId,
+            `🔧 Maintenance Mode Usage\n\n` +
+            `Current status: ${isOn ? '🔴 ON' : '🟢 OFF'}\n\n` +
+            `Commands:\n` +
+            `• /maintenance on - Enable maintenance\n` +
+            `• /maintenance off - Disable maintenance`
+        );
+    });
+
     // /maintenance on command
     bot.onText(/\/maintenance\s+on/i, async (msg) => {
         const chatId = msg.chat.id;
