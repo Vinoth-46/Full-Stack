@@ -94,8 +94,8 @@
 }
 
 .navbar-profile>img {
-  width: 40px;
-  height: 40px;
+  width: 26px;
+  height: 26px;
   border-radius: 50%;
   object-fit: cover;
 }
@@ -224,8 +224,8 @@
   }
 
   .navbar-profile>img {
-    width: 32px;
-    height: 32px;
+    width: 24px;
+    height: 24px;
   }
 }
 
@@ -248,8 +248,8 @@
   }
 
   .navbar-profile>img {
-    width: 28px;
-    height: 28px;
+    width: 22px;
+    height: 22px;
   }
 
   .nav-profile-dropdown {

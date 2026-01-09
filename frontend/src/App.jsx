@@ -13,8 +13,8 @@ import MaintenanceScreen from './components/MaintenanceScreen/MaintenanceScreen'
 import NotFound from './pages/NotFound/NotFound';
 import { StoreContext } from './context/Storecontext';
 
-// Set this to true to enable maintenance mode
-const MAINTENANCE_MODE = false;
+// Maintenance mode - set VITE_MAINTENANCE_MODE=true in Render env vars to enable
+const MAINTENANCE_MODE = import.meta.env.VITE_MAINTENANCE_MODE === 'true';
 
 const App = () => {
   const { showLogin, setShowLogin, food_list } = useContext(StoreContext);
