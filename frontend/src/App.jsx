@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import Navbar from './components/Navbar/Navbar';
 import Home from './pages/Home/Home';
@@ -8,13 +8,24 @@ import Footer from './components/Footer/Footer';
 import LoginPopup from './components/LoginPopup/LoginPopup';
 import Verify from './pages/Verify/Verify';
 import MyOrders from './pages/MyOrders/MyOrders';
+import LoadingScreen from './components/LoadingScreen/LoadingScreen';
 import { StoreContext } from './context/Storecontext';
 
 const App = () => {
-  const { showLogin, setShowLogin } = useContext(StoreContext);
+  const { showLogin, setShowLogin, food_list } = useContext(StoreContext);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Hide loading screen once food list is loaded
+    if (food_list.length > 0) {
+      const timer = setTimeout(() => setLoading(false), 1500);
+      return () => clearTimeout(timer);
+    }
+  }, [food_list]);
 
   return (
     <>
+      {loading && <LoadingScreen />}
       {showLogin && <LoginPopup setShowLogin={setShowLogin} />}
       <div className="app">
         <Navbar setShowLogin={setShowLogin} />
@@ -33,3 +44,4 @@ const App = () => {
 };
 
 export default App;
+
