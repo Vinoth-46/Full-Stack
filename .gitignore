@@ -9,6 +9,9 @@ backend/public/admin/
 .env
 .env.local
 .env.production.local
+backend/.env
+frontend/.env
+admin/.env
 
 # OS files
 .DS_Store
