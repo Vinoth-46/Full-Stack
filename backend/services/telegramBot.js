@@ -8,6 +8,11 @@ let bot = null;
 // ADMIN ONLY - Your Telegram Chat ID
 const ADMIN_ID = 1915596093;
 
+// Escape Markdown special characters
+const escapeMarkdown = (text) => {
+    return text.replace(/[_*[\]()~`>#+=|{}.!-]/g, '\\$&');
+};
+
 const initTelegramBot = () => {
     if (!token) {
         console.log('⚠️ TELEGRAM_BOT_TOKEN not set - Telegram bot disabled');
@@ -17,15 +22,19 @@ const initTelegramBot = () => {
     bot = new TelegramBot(token, { polling: true });
     console.log('🤖 Telegram bot started: t.me/VinoTreats_bot');
 
+    // Handle polling errors silently (409 conflicts during deploy transitions)
+    bot.on('polling_error', (error) => {
+        if (error.code !== 'ETELEGRAM') {
+            console.error('Telegram polling error:', error.message);
+        }
+    });
+
     // Check if user is admin
     const isAdmin = (chatId) => chatId === ADMIN_ID;
 
     // Unauthorized access message
     const sendUnauthorized = (chatId) => {
-        bot.sendMessage(chatId,
-            `🚫 *Access Denied*\n\nYou are not authorized to use this bot.`,
-            { parse_mode: 'Markdown' }
-        );
+        bot.sendMessage(chatId, '🚫 Access Denied\n\nYou are not authorized to use this bot.');
     };
 
     // /start command
@@ -37,17 +46,16 @@ const initTelegramBot = () => {
             return;
         }
 
-        const username = msg.from.username || msg.from.first_name;
+        const username = escapeMarkdown(msg.from.username || msg.from.first_name || 'Admin');
 
         bot.sendMessage(chatId,
-            `🍽️ *Welcome to VinoTreats Admin Bot!*\n\n` +
+            `🍽️ Welcome to VinoTreats Admin Bot!\n\n` +
             `Hello ${username}! ✅ You are authorized.\n\n` +
-            `*Commands:*\n` +
+            `Commands:\n` +
             `• /maintenance on - 🔴 Enable maintenance\n` +
             `• /maintenance off - 🟢 Disable maintenance\n` +
             `• /status - 📊 Check status\n` +
-            `• /help - ❓ Show commands`,
-            { parse_mode: 'Markdown' }
+            `• /help - ❓ Show commands`
         );
     });
 
@@ -61,12 +69,11 @@ const initTelegramBot = () => {
         }
 
         bot.sendMessage(chatId,
-            `🍽️ *VinoTreats Admin Commands*\n\n` +
+            `🍽️ VinoTreats Admin Commands\n\n` +
             `• /maintenance on - 🔴 Enable maintenance mode\n` +
             `• /maintenance off - 🟢 Disable maintenance mode\n` +
             `• /status - 📊 Check current status\n` +
-            `• /help - ❓ Show this help`,
-            { parse_mode: 'Markdown' }
+            `• /help - ❓ Show this help`
         );
     });
 
@@ -79,7 +86,7 @@ const initTelegramBot = () => {
             return;
         }
 
-        const username = msg.from.username || msg.from.first_name;
+        const username = msg.from.username || msg.from.first_name || 'Admin';
 
         await Settings.findOneAndUpdate(
             { key: 'maintenance_mode' },
@@ -88,11 +95,10 @@ const initTelegramBot = () => {
         );
 
         bot.sendMessage(chatId,
-            `🔧 *Maintenance Mode ENABLED* 🔴\n\n` +
+            `🔧 Maintenance Mode ENABLED 🔴\n\n` +
             `✅ Website is now in maintenance mode.\n` +
             `👤 Changed by: ${username}\n\n` +
-            `🌐 Users will see the maintenance screen.`,
-            { parse_mode: 'Markdown' }
+            `🌐 Users will see the maintenance screen.`
         );
     });
 
@@ -105,7 +111,7 @@ const initTelegramBot = () => {
             return;
         }
 
-        const username = msg.from.username || msg.from.first_name;
+        const username = msg.from.username || msg.from.first_name || 'Admin';
 
         await Settings.findOneAndUpdate(
             { key: 'maintenance_mode' },
@@ -114,11 +120,10 @@ const initTelegramBot = () => {
         );
 
         bot.sendMessage(chatId,
-            `✅ *Maintenance Mode DISABLED* 🟢\n\n` +
+            `✅ Maintenance Mode DISABLED 🟢\n\n` +
             `🌐 Website is now LIVE!\n` +
             `👤 Changed by: ${username}\n\n` +
-            `Users can access the website normally.`,
-            { parse_mode: 'Markdown' }
+            `Users can access the website normally.`
         );
     });
 
@@ -139,12 +144,11 @@ const initTelegramBot = () => {
             : 'Never';
 
         bot.sendMessage(chatId,
-            `📊 *VinoTreats Status*\n\n` +
+            `📊 VinoTreats Status\n\n` +
             `🔧 Maintenance: ${isOn ? '🔴 ON' : '🟢 OFF'}\n` +
             `👤 Last changed by: ${by}\n` +
             `🕐 Updated: ${updatedAt}\n\n` +
-            `🌐 Website: https://full-stack-yldm.onrender.com`,
-            { parse_mode: 'Markdown' }
+            `🌐 Website: https://full-stack-yldm.onrender.com`
         );
     });
 
