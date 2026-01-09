@@ -52,8 +52,8 @@ const initTelegramBot = () => {
             `🍽️ Welcome to VinoTreats Admin Bot!\n\n` +
             `Hello ${username}! ✅ You are authorized.\n\n` +
             `Commands:\n` +
-            `• /maintenance on - 🔴 Enable maintenance\n` +
-            `• /maintenance off - 🟢 Disable maintenance\n` +
+            `• /maintenance_on - 🔴 Enable maintenance\n` +
+            `• /maintenance_off - 🟢 Disable maintenance\n` +
             `• /status - 📊 Check status\n` +
             `• /help - ❓ Show commands`
         );
@@ -70,8 +70,8 @@ const initTelegramBot = () => {
 
         bot.sendMessage(chatId,
             `🍽️ VinoTreats Admin Commands\n\n` +
-            `• /maintenance on - 🔴 Enable maintenance mode\n` +
-            `• /maintenance off - 🟢 Disable maintenance mode\n` +
+            `• /maintenance_on - 🔴 Enable maintenance mode\n` +
+            `• /maintenance_off - 🟢 Disable maintenance mode\n` +
             `• /status - 📊 Check current status\n` +
             `• /help - ❓ Show this help`
         );
@@ -94,13 +94,13 @@ const initTelegramBot = () => {
             `🔧 Maintenance Mode Usage\n\n` +
             `Current status: ${isOn ? '🔴 ON' : '🟢 OFF'}\n\n` +
             `Commands:\n` +
-            `• /maintenance on - Enable maintenance\n` +
-            `• /maintenance off - Disable maintenance`
+            `• /maintenance_on - Enable maintenance\n` +
+            `• /maintenance_off - Disable maintenance`
         );
     });
 
-    // /maintenance on command
-    bot.onText(/\/maintenance\s+on/i, async (msg) => {
+    // /maintenance_on command
+    bot.onText(/\/maintenance_on/i, async (msg) => {
         const chatId = msg.chat.id;
 
         if (!isAdmin(chatId)) {
@@ -124,8 +124,8 @@ const initTelegramBot = () => {
         );
     });
 
-    // /maintenance off command
-    bot.onText(/\/maintenance\s+off/i, async (msg) => {
+    // /maintenance_off command
+    bot.onText(/\/maintenance_off/i, async (msg) => {
         const chatId = msg.chat.id;
 
         if (!isAdmin(chatId)) {
