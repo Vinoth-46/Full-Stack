@@ -108,8 +108,8 @@
 
 .navbar-profile>img {
   width: 24px;
-  height: 24px;
-  object-fit: cover;
+  height: auto;
+  object-fit: contain;
 }
 
 .navbar-profile:hover {
@@ -231,10 +231,14 @@
   }
 
   .navbar-search-icon img,
-  .navbar-right>img,
-  .navbar-profile>img {
+  .navbar-right>img {
     width: 20px;
     height: 20px;
+  }
+
+  .navbar-profile>img {
+    width: 20px;
+    height: auto;
   }
 }
 
@@ -257,10 +261,14 @@
   }
 
   .navbar-search-icon img,
-  .navbar-right>img,
-  .navbar-profile>img {
+  .navbar-right>img {
     width: 18px;
     height: 18px;
+  }
+
+  .navbar-profile>img {
+    width: 18px;
+    height: auto;
   }
 
   .nav-profile-dropdown {
