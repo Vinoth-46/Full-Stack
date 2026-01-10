@@ -15,6 +15,14 @@ const Cart = () => {
   const discountAmount = subtotal * discount;
   const total = subtotal - discountAmount + deliveryFee;
 
+  // Handle both Cloudinary URLs and local images
+  const getImageUrl = (img) => {
+    if (img && img.startsWith('http')) {
+      return img; // Cloudinary URL
+    }
+    return `${url}/images/${img}`; // Local image
+  };
+
   const handlePromoSubmit = (e) => {
     e.preventDefault();
     const code = promoCode.trim().toUpperCase();
@@ -52,11 +60,11 @@ const Cart = () => {
             return (
               <div key={item._id} className='cart-items-item'>
                 <img
-                  src={`${url}/images/${item.image}`}
+                  src={getImageUrl(item.image)}
                   alt={item.name}
                   onError={(e) => {
                     e.target.onerror = null;
-                    e.target.src = '/fallback.png'; // optional fallback image
+                    e.target.src = '/fallback.png';
                   }}
                 />
                 <p>{item.name}</p>
