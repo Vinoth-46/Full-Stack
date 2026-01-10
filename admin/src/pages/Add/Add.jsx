@@ -11,6 +11,7 @@ const Add = ({ url }) => {
   const [category, setCategory] = useState('Salad');
   const [price, setPrice] = useState('');
   const [status, setStatus] = useState({ type: '', text: '' });
+  const [loading, setLoading] = useState(false);
 
   // Categories list - same as List.jsx
   const [categories, setCategories] = useState([
@@ -40,6 +41,8 @@ const Add = ({ url }) => {
 
   const onSubmitHandler = async (event) => {
     event.preventDefault();
+    if (loading) return; // Prevent double submission
+    setLoading(true);
 
     const formData = new FormData();
     formData.append('name', name);
@@ -62,6 +65,8 @@ const Add = ({ url }) => {
     } catch (error) {
       setStatus({ type: 'error', text: `Error: ${error.message}` });
       toast.error(`Error: ${error.message}`);
+    } finally {
+      setLoading(false);
     }
 
     setTimeout(() => setStatus({ type: '', text: '' }), 3000);
@@ -166,7 +171,9 @@ const Add = ({ url }) => {
           </div>
         </div>
 
-        <button type="submit" className="add-btn">ADD</button>
+        <button type="submit" className="add-btn" disabled={loading}>
+          {loading ? 'Adding...' : 'ADD'}
+        </button>
       </form>
     </div>
   );
