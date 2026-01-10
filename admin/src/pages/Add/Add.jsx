@@ -4,23 +4,38 @@ import { assets } from '../../assets/assets';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
-const Add = ({url}) => {
-  
-
+const Add = ({ url }) => {
   const [image, setImage] = useState(false);
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
-  const [category, setCategory] = useState('salad');
+  const [category, setCategory] = useState('Salad');
   const [price, setPrice] = useState('');
-
   const [status, setStatus] = useState({ type: '', text: '' });
+
+  // Categories list - same as List.jsx
+  const [categories, setCategories] = useState([
+    'Salad', 'Rolls', 'Deserts', 'Sandwich', 'Cake', 'Pure Veg', 'Pasta', 'Noodles',
+    'Pizza', 'Burger', 'Biryani', 'Chinese', 'South Indian', 'Beverages'
+  ]);
+  const [newCategory, setNewCategory] = useState('');
+  const [showAddCategory, setShowAddCategory] = useState(false);
 
   const resetForm = () => {
     setName('');
     setDescription('');
-    setCategory('salad');
+    setCategory('Salad');
     setPrice('');
     setImage(false);
+  };
+
+  const addNewCategory = () => {
+    if (newCategory.trim() && !categories.includes(newCategory.trim())) {
+      setCategories((prev) => [...prev, newCategory.trim()]);
+      setCategory(newCategory.trim());
+      setNewCategory('');
+      setShowAddCategory(false);
+      toast.success(`Category "${newCategory.trim()}" added!`);
+    }
   };
 
   const onSubmitHandler = async (event) => {
@@ -105,21 +120,37 @@ const Add = ({url}) => {
         <div className="add-category-price">
           <div className="add-category flex-col">
             <p>Product category</p>
-            <select
-              name="category"
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
-              required
-            >
-              <option value="salad">Salad</option>
-              <option value="Rolls">Rolls</option>
-              <option value="Deserts">Deserts</option>
-              <option value="Sandwich">Sandwich</option>
-              <option value="Cake">Cake</option>
-              <option value="Pure Veg">Pure Veg</option>
-              <option value="Pasta">Pasta</option>
-              <option value="Noodles">Noodles</option>
-            </select>
+            <div className="category-select-row">
+              <select
+                name="category"
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+                required
+              >
+                {categories.map((cat) => (
+                  <option key={cat} value={cat}>{cat}</option>
+                ))}
+              </select>
+              <button
+                type="button"
+                className="add-category-btn"
+                onClick={() => setShowAddCategory(!showAddCategory)}
+              >
+                + New
+              </button>
+            </div>
+
+            {showAddCategory && (
+              <div className="new-category-row">
+                <input
+                  type="text"
+                  placeholder="Enter new category"
+                  value={newCategory}
+                  onChange={(e) => setNewCategory(e.target.value)}
+                />
+                <button type="button" onClick={addNewCategory}>Add</button>
+              </div>
+            )}
           </div>
 
           <div className="add-price flex-col">
