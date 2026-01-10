@@ -34,60 +34,94 @@
             font-size: 1.5rem;
             font-weight: bold;
             margin-bottom: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
 
-        /* Simple plate illustration */
+        .logo-icon {
+            width: 30px;
+            height: 30px;
+        }
+
+        /* WiFi off icon */
         .illustration {
-            position: relative;
-            width: 160px;
-            height: 160px;
+            width: 80px;
+            height: 80px;
             margin: 0 auto 30px;
-        }
-
-        .plate {
-            width: 140px;
-            height: 140px;
-            background: white;
-            border-radius: 50%;
-            border: 8px solid #e0e0e0;
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .plate-inner {
-            width: 90px;
-            height: 90px;
-            border: 2px dashed #ddd;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            position: relative;
         }
 
         .wifi-icon {
-            font-size: 36px;
-            opacity: 0.4;
+            width: 80px;
+            height: 80px;
+            border: 3px solid #ccc;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
         }
 
-        .fork-knife {
+        .wifi-bars {
+            width: 40px;
+            height: 30px;
+            position: relative;
+        }
+
+        .wifi-bars::before,
+        .wifi-bars::after,
+        .wifi-bars span {
+            content: "";
             position: absolute;
-            font-size: 40px;
+            border: 3px solid #aaa;
+            border-bottom: none;
+            border-radius: 50% 50% 0 0;
+            left: 50%;
+            transform: translateX(-50%);
         }
 
-        .fork {
-            left: -15px;
-            top: 50%;
-            transform: translateY(-50%) rotate(-20deg);
+        .wifi-bars::before {
+            width: 40px;
+            height: 20px;
+            bottom: 0;
         }
 
-        .knife {
-            right: -15px;
+        .wifi-bars::after {
+            width: 26px;
+            height: 13px;
+            bottom: 0;
+        }
+
+        .wifi-bars span {
+            width: 12px;
+            height: 6px;
+            bottom: 0;
+        }
+
+        .wifi-bars span::after {
+            content: "";
+            width: 6px;
+            height: 6px;
+            background: #aaa;
+            border-radius: 50%;
+            position: absolute;
+            bottom: -3px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .slash {
+            position: absolute;
+            width: 60px;
+            height: 3px;
+            background: #e74c3c;
+            transform: rotate(-45deg);
             top: 50%;
-            transform: translateY(-50%) rotate(20deg);
+            left: 50%;
+            margin-left: -30px;
+            margin-top: -1.5px;
         }
 
         h1 {
@@ -128,13 +162,20 @@
 
         .tips li {
             padding: 6px 0;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            padding-left: 20px;
+            position: relative;
         }
 
-        .tips li span {
-            font-size: 14px;
+        .tips li::before {
+            content: "";
+            width: 6px;
+            height: 6px;
+            background: teal;
+            border-radius: 50%;
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
         }
 
         .retry-btn {
@@ -192,16 +233,19 @@
 
 <body>
     <div class="container">
-        <div class="logo">🍽️ VinoTreats</div>
+        <div class="logo">
+            <svg class="logo-icon" viewBox="0 0 24 24" fill="teal">
+                <path
+                    d="M11 9H9V2H7v7H5V2H3v7c0 2.12 1.66 3.84 3.75 3.97V22h2.5v-9.03C11.34 12.84 13 11.12 13 9V2h-2v7zm5-3v8h2.5v8H21V2c-2.76 0-5 2.24-5 4z" />
+            </svg>
+            VinoTreats
+        </div>
 
         <div class="illustration">
-            <span class="fork-knife fork">🍴</span>
-            <div class="plate">
-                <div class="plate-inner">
-                    <span class="wifi-icon">📶</span>
-                </div>
+            <div class="wifi-icon">
+                <div class="wifi-bars"><span></span></div>
+                <div class="slash"></div>
             </div>
-            <span class="fork-knife knife">🔪</span>
         </div>
 
         <h1>No Internet Connection</h1>
@@ -213,9 +257,9 @@
         <div class="tips">
             <p class="tips-title">Quick fixes:</p>
             <ul>
-                <li><span>📶</span> Check your WiFi or mobile data</li>
-                <li><span>🔄</span> Try refreshing the page</li>
-                <li><span>✈️</span> Make sure airplane mode is off</li>
+                <li>Check your WiFi or mobile data</li>
+                <li>Try refreshing the page</li>
+                <li>Make sure airplane mode is off</li>
             </ul>
         </div>
 

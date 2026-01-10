@@ -6,13 +6,15 @@ import {
   userOrders,
   listOrders,
   updateStatus,
+  placeCodOrder,
 } from "../controllers/orderController.js";
 
 const orderRouter = express.Router();
 
 orderRouter.post("/place", authMiddleware, placeOrder);
+orderRouter.post("/place-cod", authMiddleware, placeCodOrder);
 orderRouter.post("/verify", verifyOrder);
-orderRouter.post("/user-order", authMiddleware, userOrders);  
+orderRouter.post("/user-order", authMiddleware, userOrders);
 orderRouter.get("/list", listOrders);
 orderRouter.post("/status", updateStatus);
 

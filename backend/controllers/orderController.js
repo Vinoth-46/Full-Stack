@@ -130,4 +130,39 @@ const updateStatus = async (req, res) => {
   }
 };
 
-export { placeOrder, verifyOrder, userOrders, listOrders, updateStatus };
+// ========== Place COD Order ==========
+const placeCodOrder = async (req, res) => {
+  try {
+    const userId = req.userId;
+    const { items, amount, address } = req.body;
+
+    if (!items?.length || !amount || !address) {
+      return res.status(400).json({ success: false, message: "Missing required fields" });
+    }
+
+    const newOrder = new orderModel({
+      userId,
+      items,
+      amount,
+      address,
+      payment: false,
+      status: "Food Processing",
+      paymentMethod: "COD"
+    });
+    await newOrder.save();
+
+    // Clear user's cart
+    await userModel.findByIdAndUpdate(userId, { cartData: {} });
+
+    res.status(200).json({
+      success: true,
+      message: "Order placed successfully! Pay on delivery.",
+      orderId: newOrder._id
+    });
+  } catch (error) {
+    console.error("❌ Error placing COD order:", error);
+    res.status(500).json({ success: false, message: "Something went wrong", error });
+  }
+};
+
+export { placeOrder, verifyOrder, userOrders, listOrders, updateStatus, placeCodOrder };
