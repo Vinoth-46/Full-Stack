@@ -4,16 +4,19 @@ import { toast } from 'react-toastify';
 import axios from 'axios';
 import { assets } from '../../assets/assets.js';
 
-const Order = ({ url }) => {
+const Order = ({ url, token }) => {
   const [orders, setOrders] = useState([]);
 
   useEffect(() => {
     fetchAllOrders();
-  }, []);
+  }, [token]);
 
   const fetchAllOrders = async () => {
+    if (!token) return;
     try {
-      const response = await axios.get(url + '/api/order/list');
+      const response = await axios.get(url + '/api/order/list', {
+        headers: { Authorization: `Bearer ${token}` }
+      });
       if (response.data.success) {
         const ordersWithStatus = response.data.orders.map(order => ({
           ...order,
@@ -35,6 +38,8 @@ const Order = ({ url }) => {
       const res = await axios.post(url + '/api/order/status', {
         orderId,
         status: newStatus,
+      }, {
+        headers: { Authorization: `Bearer ${token}` }
       });
 
       if (res.data.success) {

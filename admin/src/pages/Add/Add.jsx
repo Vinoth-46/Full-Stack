@@ -4,7 +4,7 @@ import { assets } from '../../assets/assets';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
-const Add = ({ url }) => {
+const Add = ({ url, token }) => {
   const [image, setImage] = useState(false);
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
@@ -52,7 +52,9 @@ const Add = ({ url }) => {
     formData.append('image', image);
 
     try {
-      const response = await axios.post(`${url}/api/food/add`, formData);
+      const response = await axios.post(`${url}/api/food/add`, formData, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
 
       if (response.data.success) {
         setStatus({ type: 'success', text: 'Item added successfully!' });

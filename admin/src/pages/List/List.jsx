@@ -3,7 +3,7 @@ import './List.css';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
-const List = ({ url }) => {
+const List = ({ url, token }) => {
   const [list, setList] = useState([]);
   const [editItem, setEditItem] = useState(null);
   const [categories, setCategories] = useState([
@@ -38,7 +38,9 @@ const List = ({ url }) => {
   const removeFood = async (id) => {
     if (!window.confirm("Are you sure you want to delete this item?")) return;
     try {
-      const response = await axios.post(`${url}/api/food/remove`, { id });
+      const response = await axios.post(`${url}/api/food/remove`, { id }, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
       if (response.data.success) {
         toast.success("Item deleted");
         setList((prev) => prev.filter((item) => item._id !== id));
@@ -84,6 +86,8 @@ const List = ({ url }) => {
         description: editItem.description,
         price: editItem.price,
         category: editItem.category
+      }, {
+        headers: { Authorization: `Bearer ${token}` }
       });
       if (response.data.success) {
         toast.success("Item updated successfully!");
