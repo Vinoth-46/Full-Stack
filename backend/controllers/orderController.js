@@ -1,5 +1,6 @@
 import orderModel from "../models/orderModel.js";
 import userModel from "../models/userModel.js";
+import foodModel from "../models/foodModel.js";
 import Stripe from "stripe";
 import dotenv from "dotenv";
 
@@ -28,21 +29,42 @@ const placeOrder = async (req, res) => {
     }
 
     const userId = req.userId;
-    const { items, amount, address } = req.body;
+    const { items, address } = req.body;
 
-    if (!items?.length || !amount || !address) {
+    if (!items?.length || !address) {
       return res.status(400).json({ success: false, message: "Missing required fields" });
     }
 
-    const newOrder = new orderModel({ userId, items, amount, address });
+    // Calculate total amount server-side
+    let totalAmount = 0;
+    const orderItems = [];
+
+    for (const item of items) {
+        const foodItem = await foodModel.findById(item._id);
+        if (foodItem) {
+            totalAmount += foodItem.price * item.quantity;
+            orderItems.push({
+                name: foodItem.name,
+                price: foodItem.price,
+                quantity: item.quantity,
+                _id: foodItem._id // keep the id
+            });
+        }
+    }
+
+    // Add delivery charge
+    const deliveryCharge = 2;
+    const finalAmount = totalAmount + deliveryCharge;
+
+    const newOrder = new orderModel({ userId, items: items, amount: finalAmount, address });
     await newOrder.save();
 
     await userModel.findByIdAndUpdate(userId, { cartData: {} });
 
-    const line_items = items.map(item => ({
+    const line_items = orderItems.map(item => ({
       price_data: {
         currency: "inr",
-        product_data: { name: item.name || "Unnamed Item" },
+        product_data: { name: item.name },
         unit_amount: Math.round(item.price * 100),
       },
       quantity: item.quantity,
@@ -134,16 +156,27 @@ const updateStatus = async (req, res) => {
 const placeCodOrder = async (req, res) => {
   try {
     const userId = req.userId;
-    const { items, amount, address } = req.body;
+    const { items, address } = req.body;
 
-    if (!items?.length || !amount || !address) {
+    if (!items?.length || !address) {
       return res.status(400).json({ success: false, message: "Missing required fields" });
     }
+
+    // Calculate total amount server-side
+    let totalAmount = 0;
+    for (const item of items) {
+        const foodItem = await foodModel.findById(item._id);
+        if (foodItem) {
+            totalAmount += foodItem.price * item.quantity;
+        }
+    }
+    const deliveryCharge = 2;
+    const finalAmount = totalAmount + deliveryCharge;
 
     const newOrder = new orderModel({
       userId,
       items,
-      amount,
+      amount: finalAmount,
       address,
       payment: false,
       status: "Food Processing",

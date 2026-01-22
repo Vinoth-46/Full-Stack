@@ -1,5 +1,6 @@
 import express from "express";
 import authMiddleware from "../middleware/auth.js";
+import adminMiddleware from "../middleware/admin.js";
 import {
   placeOrder,
   verifyOrder,
@@ -15,7 +16,7 @@ orderRouter.post("/place", authMiddleware, placeOrder);
 orderRouter.post("/place-cod", authMiddleware, placeCodOrder);
 orderRouter.post("/verify", verifyOrder);
 orderRouter.post("/user-order", authMiddleware, userOrders);
-orderRouter.get("/list", listOrders);
-orderRouter.post("/status", updateStatus);
+orderRouter.get("/list", authMiddleware, adminMiddleware, listOrders);
+orderRouter.post("/status", authMiddleware, adminMiddleware, updateStatus);
 
 export default orderRouter;
