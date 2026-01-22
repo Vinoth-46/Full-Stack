@@ -6,7 +6,7 @@ const token = process.env.TELEGRAM_BOT_TOKEN;
 let bot = null;
 
 // ADMIN ONLY - Your Telegram Chat ID
-const ADMIN_ID = 1915596093;
+const ADMIN_ID = Number(process.env.TELEGRAM_ADMIN_ID);
 
 // Escape Markdown special characters
 const escapeMarkdown = (text) => {

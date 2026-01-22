@@ -5,7 +5,10 @@ import validator from "validator";
 
 // Helper function to generate JWT
 const createToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET || "secret123", {
+  if (!process.env.JWT_SECRET) {
+      throw new Error("JWT_SECRET is not defined");
+  }
+  return jwt.sign({ id }, process.env.JWT_SECRET, {
     expiresIn: "3d",
   });
 };
@@ -13,6 +16,11 @@ const createToken = (id) => {
 // Login user
 const loginUser = async (req, res) => {
   const { email, password } = req.body;
+
+  // Sanitize input
+  if (typeof email !== 'string' || typeof password !== 'string') {
+      return res.status(400).json({ success: false, message: "Invalid input format" });
+  }
 
   try {
     const user = await userModel.findOne({ email });
@@ -68,10 +76,13 @@ const registerUser = async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
+    const role = email === process.env.ADMIN_EMAIL ? "admin" : "user";
+
     const newUser = new userModel({
       name,
       email,
       password: hashedPassword,
+      role
     });
 
     await newUser.save();
