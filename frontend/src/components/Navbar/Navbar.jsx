@@ -6,7 +6,9 @@ import { StoreContext } from '../../context/Storecontext';
 
 const Navbar = ({ setShowLogin }) => {
   const [menu, setMenu] = useState("menu");
-  const { getTotalCartAmount, token, setToken } = useContext(StoreContext);
+  const [showSearchInput, setShowSearchInput] = useState(false);
+  const [showDropdown, setShowDropdown] = useState(true);
+  const { getTotalCartAmount, token, setToken, searchQuery, setSearchQuery, food_list } = useContext(StoreContext);
   const navigate = useNavigate(); // ✅ Initialize navigate
 
   const handleLogout = () => {
@@ -14,6 +16,42 @@ const Navbar = ({ setShowLogin }) => {
     localStorage.removeItem("user");
     setToken(null);
   };
+
+  const handleSearchChange = (e) => {
+    const value = e.target.value;
+    setSearchQuery(value);
+    setShowDropdown(true);
+    if (value.trim() && window.location.pathname !== "/") {
+      navigate("/");
+    }
+  };
+
+  const toggleSearch = () => {
+    setShowSearchInput((prev) => !prev);
+    setShowDropdown(true);
+    if (window.location.pathname !== "/") {
+      navigate("/");
+    }
+  };
+
+  const handleSelectSuggestion = (dishName) => {
+    setSearchQuery(dishName);
+    setShowDropdown(false);
+    if (window.location.pathname !== "/") {
+      navigate("/");
+    }
+    const foodSection = document.getElementById("food-display");
+    if (foodSection) {
+      foodSection.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
+  const suggestions = searchQuery.trim() && food_list
+    ? food_list.filter((item) =>
+        item.name.toLowerCase().includes(searchQuery.trim().toLowerCase()) ||
+        item.category.toLowerCase().includes(searchQuery.trim().toLowerCase())
+      ).slice(0, 6)
+    : [];
 
   return (
     <div className="navbar">
@@ -59,7 +97,61 @@ const Navbar = ({ setShowLogin }) => {
       </ul>
 
       <div className="navbar-right">
-        <img src={assets.search_icon} alt="search" />
+        <div className="navbar-search-container">
+          <img 
+            src={assets.search_icon} 
+            alt="search" 
+            onClick={toggleSearch} 
+            title="Search dishes"
+          />
+          {(showSearchInput || searchQuery) && (
+            <div className="navbar-search-box">
+              <input
+                type="text"
+                placeholder="Search food items..."
+                value={searchQuery}
+                onChange={handleSearchChange}
+                onFocus={() => setShowDropdown(true)}
+                autoFocus
+              />
+              {searchQuery && (
+                <span 
+                  className="search-clear-btn" 
+                  onClick={() => setSearchQuery("")}
+                  title="Clear search"
+                >
+                  ✕
+                </span>
+              )}
+
+              {/* 🔍 Auto-complete Suggestions Dropdown */}
+              {searchQuery.trim() && showDropdown && (
+                <ul className="navbar-search-dropdown">
+                  {suggestions.length > 0 ? (
+                    suggestions.map((item) => (
+                      <li
+                        key={item._id}
+                        onClick={() => handleSelectSuggestion(item.name)}
+                        className="search-suggestion-item"
+                      >
+                        {item.image && (
+                          <img src={item.image} alt={item.name} className="suggestion-img" />
+                        )}
+                        <div className="suggestion-info">
+                          <span className="suggestion-name">{item.name}</span>
+                          <span className="suggestion-cat">{item.category} • ${item.price}</span>
+                        </div>
+                      </li>
+                    ))
+                  ) : (
+                    <li className="search-no-suggestion">No matching food found</li>
+                  )}
+                </ul>
+              )}
+            </div>
+          )}
+        </div>
+
         <div className="navbar-search-icon">
           <Link to="/cart"><img src={assets.basket_icon} alt="cart" /></Link>
           <div className={getTotalCartAmount() === 0 ? "" : "dot"}></div>

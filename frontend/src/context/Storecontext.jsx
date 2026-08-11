@@ -11,6 +11,7 @@ const StoreContextProvider = (props) => {
   const [cartItems, setCartItems] = useState({});
   const [token, setToken] = useState(localStorage.getItem("token") || "");
   const [showLogin, setShowLogin] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
 
   // 🛒 Add to cart (with backend sync)
   const addToCart = async (itemId) => {
@@ -120,6 +121,8 @@ const StoreContextProvider = (props) => {
     setToken,
     showLogin,
     setShowLogin,
+    searchQuery,
+    setSearchQuery,
   };
 
   return (
