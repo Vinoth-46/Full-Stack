@@ -109,9 +109,10 @@ const verifyOrder = async (req, res) => {
     if (!mongoose.isValidObjectId(orderId)) {
       return res.status(400).json({ success: false, message: "Invalid order id." });
     }
+    const normalizedOrderId = new mongoose.Types.ObjectId(orderId);
 
     if (success === "true" || success === true) {
-      const order = await orderModel.findById(orderId);
+      const order = await orderModel.findById(normalizedOrderId);
       if (!order) {
         return res.status(404).json({ success: false, message: "Order not found." });
       }
@@ -125,7 +126,7 @@ const verifyOrder = async (req, res) => {
         message: "Payment confirmation is pending. Please refresh in a moment."
       });
     } else {
-      await orderModel.findByIdAndDelete(orderId);
+      await orderModel.findByIdAndDelete(normalizedOrderId);
       return res.json({ success: false, message: "Payment failed. Order removed." });
     }
   } catch (error) {
