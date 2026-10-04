@@ -23,8 +23,14 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const port = process.env.PORT || 4000;
 
+const webhookLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 300,
+  message: "Too many webhook requests from this IP, please try again later."
+});
+
 // Stripe webhook (requires raw body for signature verification)
-app.post("/api/order/webhook", express.raw({ type: "application/json" }), stripeWebhook);
+app.post("/api/order/webhook", webhookLimiter, express.raw({ type: "application/json" }), stripeWebhook);
 
 // Middleware
 app.use(express.json());

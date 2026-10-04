@@ -3,6 +3,7 @@ import userModel from "../models/userModel.js";
 import foodModel from "../models/foodModel.js";
 import Stripe from "stripe";
 import dotenv from "dotenv";
+import mongoose from "mongoose";
 
 dotenv.config();
 
@@ -105,6 +106,10 @@ const placeOrder = async (req, res) => {
 const verifyOrder = async (req, res) => {
   const { orderId, success } = req.body;
   try {
+    if (!mongoose.isValidObjectId(orderId)) {
+      return res.status(400).json({ success: false, message: "Invalid order id." });
+    }
+
     if (success === "true" || success === true) {
       const order = await orderModel.findById(orderId);
       if (!order) {
@@ -155,7 +160,7 @@ const stripeWebhook = async (req, res) => {
     return res.status(200).json({ received: true });
   } catch (error) {
     console.error("❌ Stripe webhook error:", error.message);
-    return res.status(400).send(`Webhook Error: ${error.message}`);
+    return res.status(400).send("Invalid webhook signature.");
   }
 };
 
