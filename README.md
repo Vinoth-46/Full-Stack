@@ -208,6 +208,7 @@ CLOUDINARY_API_SECRET=your_cloudinary_api_secret
 
 # Stripe Payment Gateway
 STRIPE_SECRET_KEY=sk_test_your_stripe_secret_key
+STRIPE_WEBHOOK_SECRET=whsec_your_stripe_webhook_secret
 
 # Telegram Bot Administration (Optional)
 TELEGRAM_BOT_TOKEN=123456789:ABCdefGhIJKlmNoPQRsTUVwxyZ

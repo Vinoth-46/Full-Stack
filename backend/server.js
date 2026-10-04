@@ -13,6 +13,7 @@ import cartRouter from "./routes/cartRoute.js";
 import orderRouter from "./routes/orderRoute.js";
 import settingsRouter from "./routes/settingsRoute.js";
 import { initTelegramBot } from "./services/telegramBot.js";
+import { stripeWebhook } from "./controllers/orderController.js";
 dotenv.config();
 
 // Resolve __dirname in ES modules
@@ -21,6 +22,9 @@ const __dirname = path.dirname(__filename);
 
 const app = express();
 const port = process.env.PORT || 4000;
+
+// Stripe webhook (requires raw body for signature verification)
+app.post("/api/order/webhook", express.raw({ type: "application/json" }), stripeWebhook);
 
 // Middleware
 app.use(express.json());
